@@ -11,7 +11,7 @@ public class Step {
         this.shortDescription = shortDescription;
         this.description = description;
         this.videoUrl = videoUrl;
-        this.thumbnailUrl = thumbnailUrl; 
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public String getShortDescription() {

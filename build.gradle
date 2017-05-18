@@ -21,4 +21,9 @@ task clean(type: Delete) {
 
 ext{
     moxyVersion = '1.5.2'
+    supportLibVersion = '25.3.1'
+    constraintLayoutVersion = '1.0.2'
+    junitVersion = '4.12'
+    adapterDelegatesVersion = '3.0.1'
+    butterKnifeVersion = '8.4.0'
 }
