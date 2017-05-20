@@ -17,7 +17,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
+import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.model.view.Recipe;
 import ru.chipenable.bakingapp.presentation.presenter.RecipePresenter;
 import ru.chipenable.bakingapp.presentation.view.IRecipeView;
@@ -36,7 +38,8 @@ public class RecipeFragment extends MvpAppCompatFragment implements IRecipeView 
 
     @ProvidePresenter
     RecipePresenter providePresenter(){
-        return new RecipePresenter();
+        AppComponent component = ((BakingApp)getActivity().getApplication()).getAppComponent();
+        return new RecipePresenter(component);
     }
 
     @Nullable

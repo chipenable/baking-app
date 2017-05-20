@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
     }
 }
 
@@ -26,4 +27,7 @@ ext{
     junitVersion = '4.12'
     adapterDelegatesVersion = '3.0.1'
     butterKnifeVersion = '8.4.0'
+    daggerVersion = '2.11-rc2'
+    rxjava2Version = '2.1.0'
+    rxandroidVersion = '2.0.1'
 }

@@ -4,30 +4,27 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import ru.chipenable.bakingapp.data.repo.RepoContract.IngredientEntry;
 import ru.chipenable.bakingapp.data.repo.RepoContract.RecipeEntry;
 import ru.chipenable.bakingapp.data.repo.RepoContract.StepEntry;
+import ru.chipenable.bakingapp.di.ApplicationContext;
 import ru.chipenable.bakingapp.model.view.Ingredient;
 
 /**
  * Created by Pavel.B on 20.05.2017.
  */
 
+@Singleton
 public class RepoHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "recipes.db";
     public static final int DATABASE_VERSION = 1;
 
-    private static RepoHelper database;
-
-    public static synchronized RepoHelper getInstance(Context context) {
-        if (database == null) {
-            database = new RepoHelper(context.getApplicationContext());
-        }
-        return database;
-    }
-
-    private RepoHelper(Context context) {
+    @Inject
+    public RepoHelper(@ApplicationContext Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

@@ -6,6 +6,10 @@ import com.arellomobile.mvp.MvpPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import ru.chipenable.bakingapp.data.repo.IRepo;
+import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.model.view.Recipe;
 import ru.chipenable.bakingapp.presentation.view.IRecipeView;
 
@@ -15,16 +19,22 @@ import ru.chipenable.bakingapp.presentation.view.IRecipeView;
 @InjectViewState
 public class RecipePresenter extends MvpPresenter<IRecipeView> {
 
-    public RecipePresenter(){}
+    @Inject IRepo repo;
+
+    public RecipePresenter(AppComponent component){
+        component.inject(this);
+    }
 
     @Override
     public void attachView(IRecipeView view) {
         super.attachView(view);
 
-        List<Recipe> testList = new ArrayList<>();
-        testList.add(new Recipe.Builder(0, "Ice cream", "").build());
-        testList.add(new Recipe.Builder(1, "Pizza", "").build());
-        testList.add(new Recipe.Builder(2, "Cake", "").build());
-        getViewState().showRecipes(testList);
+        repo.getRecipes()
+                .subscribe(
+                        getViewState()::showRecipes,
+                        throwable -> {},
+                        () -> {}
+                );
+
     }
 }
