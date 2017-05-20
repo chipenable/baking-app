@@ -2,7 +2,7 @@ package ru.chipenable.bakingapp.model.view;
 
 public class Ingredient {
 
-    private final Integer quantity;
+    private final int quantity;
     private final String measure;
     private final String ingredient;
 

@@ -22,9 +22,9 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
         super.attachView(view);
 
         List<Recipe> testList = new ArrayList<>();
-        testList.add(new Recipe(0, "Ice cream", ""));
-        testList.add(new Recipe(1, "Pizza", ""));
-        testList.add(new Recipe(2, "Cake", ""));
+        testList.add(new Recipe.Builder(0, "Ice cream", "").build());
+        testList.add(new Recipe.Builder(1, "Pizza", "").build());
+        testList.add(new Recipe.Builder(2, "Cake", "").build());
         getViewState().showRecipes(testList);
     }
 }
