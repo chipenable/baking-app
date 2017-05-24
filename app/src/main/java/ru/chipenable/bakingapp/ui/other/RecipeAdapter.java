@@ -21,6 +21,15 @@ import ru.chipenable.bakingapp.model.view.Recipe;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
     private List<Recipe> items;
+    private IOnItemClickListener itemClickListener;
+
+    public interface IOnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setItemClickListener(IOnItemClickListener listener){
+        itemClickListener = listener;
+    }
 
     public RecipeAdapter(){
         this(new ArrayList<Recipe>());
@@ -52,17 +61,25 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         return items == null? 0:items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         @BindView(R.id.recipe_name) TextView recipeNameView;
 
         public ViewHolder(View view){
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(this);
         }
 
         public void bind(Recipe recipe){
             recipeNameView.setText(recipe.getName());
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (itemClickListener != null){
+                itemClickListener.onItemClick(getAdapterPosition());
+            }
         }
     }
 

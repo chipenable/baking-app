@@ -9,6 +9,7 @@ import dagger.Provides;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.data.repo.Repo;
 import ru.chipenable.bakingapp.data.repo.RepoHelper;
+import ru.chipenable.bakingapp.model.navigation.Router;
 
 /**
  * Created by Pavel.B on 20.05.2017.
@@ -34,6 +35,12 @@ public class AppModule {
     @Provides
     IRepo provideRepo(RepoHelper repoHelper){
         return new Repo(repoHelper);
+    }
+
+    @Singleton
+    @Provides
+    Router provideRouter(){
+        return new Router();
     }
 
 }

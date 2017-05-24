@@ -10,6 +10,8 @@ import javax.inject.Inject;
 
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.di.AppComponent;
+import ru.chipenable.bakingapp.model.navigation.Command;
+import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.model.view.Recipe;
 import ru.chipenable.bakingapp.presentation.view.IRecipeView;
 
@@ -20,6 +22,7 @@ import ru.chipenable.bakingapp.presentation.view.IRecipeView;
 public class RecipePresenter extends MvpPresenter<IRecipeView> {
 
     @Inject IRepo repo;
+    @Inject Router router;
 
     public RecipePresenter(AppComponent component){
         component.inject(this);
@@ -28,7 +31,6 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
     @Override
     public void attachView(IRecipeView view) {
         super.attachView(view);
-
         repo.getRecipes()
                 .subscribe(
                         getViewState()::showRecipes,
@@ -37,4 +39,10 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
                 );
 
     }
+
+    public void showDetails(int position){
+        router.putCommand(Command.SHOW_DETAILS);
+    }
+
+
 }

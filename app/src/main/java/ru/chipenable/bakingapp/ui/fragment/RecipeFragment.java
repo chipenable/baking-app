@@ -48,8 +48,10 @@ public class RecipeFragment extends MvpAppCompatFragment implements IRecipeView 
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, view);
         recipeAdapter = new RecipeAdapter();
+        recipeAdapter.setItemClickListener(position -> presenter.showDetails(position));
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recipeRecyclerView.setAdapter(recipeAdapter);
+
         return view;
     }
 
