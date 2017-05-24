@@ -6,6 +6,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import ru.chipenable.bakingapp.data.network.HttpClient;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.data.repo.Repo;
 import ru.chipenable.bakingapp.data.repo.RepoHelper;
@@ -41,6 +45,18 @@ public class AppModule {
     @Provides
     Router provideRouter(){
         return new Router();
+    }
+
+    @Singleton
+    @Provides
+    public HttpClient provideClient(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HttpClient.ENDPOINT)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(HttpClient.class);
     }
 
 }
