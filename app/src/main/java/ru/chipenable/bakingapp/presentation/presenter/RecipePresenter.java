@@ -1,23 +1,18 @@
 package ru.chipenable.bakingapp.presentation.presenter;
 
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.chipenable.bakingapp.data.network.HttpClient;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.Router;
-import ru.chipenable.bakingapp.model.view.Recipe;
 import ru.chipenable.bakingapp.presentation.view.IRecipeView;
 
 /**
@@ -30,6 +25,8 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
     @Inject Router router;
     @Inject HttpClient client;
 
+    private Disposable disposable;
+
     private final String TAG = getClass().getName();
 
     public RecipePresenter(AppComponent component){
@@ -37,25 +34,33 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
     }
 
     @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        client.getRecipes()
+                .concatMap(recipes -> repo.putRecipes(recipes))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        result -> {}
+                );
+    }
+
+    @Override
     public void attachView(IRecipeView view) {
         super.attachView(view);
-        repo.getRecipes()
+        disposable = repo.getRecipes()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         getViewState()::showRecipes,
                         throwable -> {},
                         () -> {}
                 );
+    }
 
-        client.getRecipes()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        list -> Log.d(TAG, list.toString())
-                        /*throwable -> Log.d(TAG, throwable.toString()),
-                        () -> {}*/
-                );
-
-
+    @Override
+    public void detachView(IRecipeView view) {
+        super.detachView(view);
+        disposable.dispose();
     }
 
     public void showDetails(int position){

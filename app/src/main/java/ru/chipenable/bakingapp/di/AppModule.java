@@ -6,14 +6,17 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.chipenable.bakingapp.data.network.HttpClient;
+import ru.chipenable.bakingapp.data.repo.Converter;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.data.repo.Repo;
 import ru.chipenable.bakingapp.data.repo.RepoHelper;
 import ru.chipenable.bakingapp.model.navigation.Router;
+
 
 /**
  * Created by Pavel.B on 20.05.2017.
@@ -38,7 +41,8 @@ public class AppModule {
     @Singleton
     @Provides
     IRepo provideRepo(RepoHelper repoHelper){
-        return new Repo(repoHelper);
+        Converter converter = new Converter();
+        return new Repo(repoHelper, Schedulers.io(), converter);
     }
 
     @Singleton

@@ -15,6 +15,7 @@ public final class RepoContract {
 
         public static final String COL_NAME = "name";
         public static final String COL_IMAGE_URL = "image_url";
+        public static final String COL_SERVINGS = "servings";
     }
 
     public static abstract class IngredientEntry implements BaseColumns{

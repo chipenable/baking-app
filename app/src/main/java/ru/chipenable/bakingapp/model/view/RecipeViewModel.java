@@ -2,7 +2,7 @@ package ru.chipenable.bakingapp.model.view;
 
 import java.util.List;
 
-public class Recipe {
+public class RecipeViewModel {
 
     private final long id;
     private final String name;
@@ -10,7 +10,7 @@ public class Recipe {
     private final List<Ingredient> ingredients;
     private final List<Step> steps;
 
-    private Recipe(Builder builder){
+    private RecipeViewModel(Builder builder){
         this.id = builder.id;
         this.name = builder.name;
         this.image = builder.image;
@@ -61,8 +61,8 @@ public class Recipe {
             return this;
         }
 
-        public Recipe build(){
-            return new Recipe(this);
+        public RecipeViewModel build(){
+            return new RecipeViewModel(this);
         }
     }
 

@@ -33,7 +33,8 @@ public class RepoHelper extends SQLiteOpenHelper {
         String createTable = "CREATE TABLE " + RecipeEntry.TABLE_NAME + " (" +
                 RecipeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 RecipeEntry.COL_NAME + " TEXT," +
-                RecipeEntry.COL_IMAGE_URL + " TEXT" +
+                RecipeEntry.COL_IMAGE_URL + " TEXT," +
+                RecipeEntry.COL_SERVINGS + " INTEGER" +
                 ");";
         db.execSQL(createTable);
 
@@ -42,7 +43,7 @@ public class RepoHelper extends SQLiteOpenHelper {
                 IngredientEntry.COL_RECIPE_ID + " INTEGER, " +
                 IngredientEntry.COL_INGREDIENT + " TEXT, " +
                 IngredientEntry.COL_MEASURE + " TEXT, " +
-                IngredientEntry.COL_QUANTITY + " INTEGER" +
+                IngredientEntry.COL_QUANTITY + " REAL" +
                 ");";
         db.execSQL(createTable);
 
