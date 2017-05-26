@@ -28,14 +28,11 @@ public class Repo implements IRepo {
     public boolean enableLog = false;//BuildConfig.DEBUG;
     private final String TAG = getClass().getName();
     private final RepoHelper repoHelper;
-    private final Scheduler scheduler;
     private final Converter converter;
     private final PublishSubject<RepoEvent> publishSubject;
 
-
-    public Repo(RepoHelper repoHelper, Scheduler scheduler, Converter converter){
+    public Repo(RepoHelper repoHelper, Converter converter){
         this.repoHelper = repoHelper;
-        this.scheduler = scheduler;
         this.converter = converter;
         this.publishSubject = PublishSubject.create();
     }
@@ -44,8 +41,7 @@ public class Repo implements IRepo {
     public Observable<List<RecipeViewModel>> getRecipes() {
         return Observable.concat(Observable.just(RepoEvent.SUBSCRIBE), publishSubject)
                 .doOnNext(repoEvent -> Log.d(TAG, "event: " + repoEvent.toString()))
-                .concatMap(repoEvent -> getAllRecipes())
-                .observeOn(scheduler);
+                .concatMap(repoEvent -> getAllRecipes());
     }
 
     @Override
@@ -64,7 +60,7 @@ public class Repo implements IRepo {
             logTable(RepoContract.RecipeEntry.TABLE_NAME);
             publishSubject.onNext(RepoEvent.UPDATE);
             return 0L;
-        }).observeOn(scheduler);
+        });
     }
 
     private Observable<List<RecipeViewModel>> getAllRecipes() {

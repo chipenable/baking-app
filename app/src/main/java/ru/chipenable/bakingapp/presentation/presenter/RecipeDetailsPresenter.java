@@ -17,4 +17,13 @@ public class RecipeDetailsPresenter extends MvpPresenter<IRecipeDetailsView> {
         component.inject(this);
     }
 
+    @Override
+    public void attachView(IRecipeDetailsView view) {
+        super.attachView(view);
+    }
+
+    @Override
+    public void detachView(IRecipeDetailsView view) {
+        super.detachView(view);
+    }
 }

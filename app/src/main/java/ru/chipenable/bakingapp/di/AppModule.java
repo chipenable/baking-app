@@ -6,6 +6,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -42,7 +44,7 @@ public class AppModule {
     @Provides
     IRepo provideRepo(RepoHelper repoHelper){
         Converter converter = new Converter();
-        return new Repo(repoHelper, Schedulers.io(), converter);
+        return new Repo(repoHelper, converter);
     }
 
     @Singleton
@@ -61,6 +63,20 @@ public class AppModule {
                 .build();
 
         return retrofit.create(HttpClient.class);
+    }
+
+    @IoScheduler
+    @Singleton
+    @Provides
+    public Scheduler provideIoScheduler(){
+        return Schedulers.io();
+    }
+
+    @UiScheduler
+    @Singleton
+    @Provides
+    public Scheduler provideUiScheduler(){
+        return AndroidSchedulers.mainThread();
     }
 
 }

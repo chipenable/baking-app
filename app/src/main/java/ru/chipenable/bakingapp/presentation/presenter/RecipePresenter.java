@@ -5,12 +5,11 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import ru.chipenable.bakingapp.data.network.HttpClient;
-import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.di.AppComponent;
+import ru.chipenable.bakingapp.di.UiScheduler;
+import ru.chipenable.bakingapp.interactor.RecipeInteractor;
 import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.presentation.view.IRecipeView;
@@ -21,9 +20,8 @@ import ru.chipenable.bakingapp.presentation.view.IRecipeView;
 @InjectViewState
 public class RecipePresenter extends MvpPresenter<IRecipeView> {
 
-    @Inject IRepo repo;
     @Inject Router router;
-    @Inject HttpClient client;
+    @Inject RecipeInteractor recipeInteractor;
 
     private Disposable disposable;
 
@@ -36,20 +34,14 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        client.getRecipes()
-                .concatMap(recipes -> repo.putRecipes(recipes))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        result -> {}
-                );
+        recipeInteractor.updateRecipes()
+                .subscribe(aLong -> {}, throwable -> {}, () -> {});
     }
 
     @Override
     public void attachView(IRecipeView view) {
         super.attachView(view);
-        disposable = repo.getRecipes()
-                .observeOn(AndroidSchedulers.mainThread())
+        disposable = recipeInteractor.subscribeToRecipes()
                 .subscribe(
                         getViewState()::showRecipes,
                         throwable -> {},
