@@ -11,7 +11,6 @@ import ru.chipenable.bakingapp.data.repo.RepoContract.IngredientEntry;
 import ru.chipenable.bakingapp.data.repo.RepoContract.RecipeEntry;
 import ru.chipenable.bakingapp.data.repo.RepoContract.StepEntry;
 import ru.chipenable.bakingapp.di.ApplicationContext;
-import ru.chipenable.bakingapp.model.view.Ingredient;
 
 /**
  * Created by Pavel.B on 20.05.2017.

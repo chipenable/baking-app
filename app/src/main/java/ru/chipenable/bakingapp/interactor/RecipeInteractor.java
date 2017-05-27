@@ -10,7 +10,7 @@ import ru.chipenable.bakingapp.data.network.HttpClient;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.di.IoScheduler;
 import ru.chipenable.bakingapp.di.UiScheduler;
-import ru.chipenable.bakingapp.model.view.RecipeViewModel;
+import ru.chipenable.bakingapp.model.Recipe;
 
 /**
  * Created by Pavel.B on 26.05.2017.
@@ -39,7 +39,7 @@ public class RecipeInteractor {
                 .observeOn(uiScheduler);
     }
 
-    public Observable<List<RecipeViewModel>> subscribeToRecipes(){
+    public Observable<List<Recipe>> subscribeToRecipes(){
         return repo.getRecipes()
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler);

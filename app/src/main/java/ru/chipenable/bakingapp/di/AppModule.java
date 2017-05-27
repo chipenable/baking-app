@@ -2,6 +2,8 @@ package ru.chipenable.bakingapp.di;
 
 import android.content.Context;
 
+import com.google.gson.GsonBuilder;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -12,6 +14,7 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.chipenable.bakingapp.data.network.AutoValueGsonFactory;
 import ru.chipenable.bakingapp.data.network.HttpClient;
 import ru.chipenable.bakingapp.data.repo.Converter;
 import ru.chipenable.bakingapp.data.repo.IRepo;
@@ -56,10 +59,14 @@ public class AppModule {
     @Singleton
     @Provides
     public HttpClient provideClient(){
+        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(
+                new GsonBuilder().registerTypeAdapterFactory(AutoValueGsonFactory.create())
+                        .create());
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(HttpClient.ENDPOINT)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(gsonConverterFactory)
                 .build();
 
         return retrofit.create(HttpClient.class);

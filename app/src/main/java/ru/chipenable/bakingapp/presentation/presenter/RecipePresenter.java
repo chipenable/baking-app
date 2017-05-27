@@ -1,5 +1,7 @@
 package ru.chipenable.bakingapp.presentation.presenter;
 
+import android.util.Log;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
@@ -35,7 +37,7 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         recipeInteractor.updateRecipes()
-                .subscribe(aLong -> {}, throwable -> {}, () -> {});
+                .subscribe(aLong -> {}, throwable -> Log.d(TAG, throwable.toString()), () -> {});
     }
 
     @Override
@@ -43,9 +45,9 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
         super.attachView(view);
         disposable = recipeInteractor.subscribeToRecipes()
                 .subscribe(
-                        getViewState()::showRecipes,
-                        throwable -> {},
-                        () -> {}
+                        getViewState()::showRecipes/*,
+                        throwable -> Log.d(TAG, throwable.toString()),
+                        () -> {}*/
                 );
     }
 

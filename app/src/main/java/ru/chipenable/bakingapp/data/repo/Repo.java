@@ -6,17 +6,15 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.subjects.PublishSubject;
+
 import ru.chipenable.bakingapp.BuildConfig;
-import ru.chipenable.bakingapp.model.network.Ingredient;
-import ru.chipenable.bakingapp.model.network.Recipe;
-import ru.chipenable.bakingapp.model.network.Step;
-import ru.chipenable.bakingapp.model.view.RecipeViewModel;
+import ru.chipenable.bakingapp.model.Ingredient;
+import ru.chipenable.bakingapp.model.Recipe;
+import ru.chipenable.bakingapp.model.Step;
 
 
 /**
@@ -25,7 +23,7 @@ import ru.chipenable.bakingapp.model.view.RecipeViewModel;
 
 public class Repo implements IRepo {
 
-    public boolean enableLog = false;//BuildConfig.DEBUG;
+    public boolean enableLog = BuildConfig.DEBUG;
     private final String TAG = getClass().getName();
     private final RepoHelper repoHelper;
     private final Converter converter;
@@ -38,7 +36,7 @@ public class Repo implements IRepo {
     }
 
     @Override
-    public Observable<List<RecipeViewModel>> getRecipes() {
+    public Observable<List<Recipe>> getRecipes() {
         return Observable.concat(Observable.just(RepoEvent.SUBSCRIBE), publishSubject)
                 .doOnNext(repoEvent -> Log.d(TAG, "event: " + repoEvent.toString()))
                 .concatMap(repoEvent -> getAllRecipes());
@@ -54,8 +52,8 @@ public class Repo implements IRepo {
             for(Recipe recipe: recipeList) {
                 ContentValues cv = converter.toContentValues(recipe);
                 long recipeId = db.insert(RepoContract.RecipeEntry.TABLE_NAME, null, cv);
-                putSteps(db, recipeId, recipe.getSteps());
-                putIngredients(db, recipeId, recipe.getIngredients());
+                putSteps(db, recipeId, recipe.steps());
+                putIngredients(db, recipeId, recipe.ingredients());
             }
             logTable(RepoContract.RecipeEntry.TABLE_NAME);
             publishSubject.onNext(RepoEvent.UPDATE);
@@ -63,12 +61,12 @@ public class Repo implements IRepo {
         });
     }
 
-    private Observable<List<RecipeViewModel>> getAllRecipes() {
+    private Observable<List<Recipe>> getAllRecipes() {
         return Observable.fromCallable(() -> {
             SQLiteDatabase db = repoHelper.getReadableDatabase();
             Cursor cursor = db.query(RepoContract.RecipeEntry.TABLE_NAME, null, null, null,
                     null, null, null);
-            List<RecipeViewModel> list = converter.toRecipeList(cursor);
+            List<Recipe> list = converter.toRecipeList(cursor);
             cursor.close();
             return list;
         });

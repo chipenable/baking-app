@@ -12,7 +12,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.chipenable.bakingapp.R;
-import ru.chipenable.bakingapp.model.view.RecipeViewModel;
+import ru.chipenable.bakingapp.model.Recipe;
 
 /**
  * Created by Pavel.B on 18.05.2017.
@@ -20,7 +20,7 @@ import ru.chipenable.bakingapp.model.view.RecipeViewModel;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
-    private List<RecipeViewModel> items;
+    private List<Recipe> items;
     private IOnItemClickListener itemClickListener;
 
     public interface IOnItemClickListener{
@@ -32,14 +32,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     }
 
     public RecipeAdapter(){
-        this(new ArrayList<RecipeViewModel>());
+        this(new ArrayList<Recipe>());
     }
 
-    public RecipeAdapter(List<RecipeViewModel> items){
+    public RecipeAdapter(List<Recipe> items){
         this.items = items;
     }
 
-    public void setItems(List<RecipeViewModel> items){
+    public void setItems(List<Recipe> items){
         this.items = items;
         notifyDataSetChanged();
     }
@@ -71,8 +71,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             view.setOnClickListener(this);
         }
 
-        public void bind(RecipeViewModel recipe){
-            recipeNameView.setText(recipe.getName());
+        public void bind(Recipe recipe){
+            recipeNameView.setText(recipe.name());
         }
 
         @Override

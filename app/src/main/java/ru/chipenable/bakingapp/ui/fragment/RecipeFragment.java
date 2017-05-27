@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.di.AppComponent;
-import ru.chipenable.bakingapp.model.view.RecipeViewModel;
+import ru.chipenable.bakingapp.model.Recipe;
 import ru.chipenable.bakingapp.presentation.presenter.RecipePresenter;
 import ru.chipenable.bakingapp.presentation.view.IRecipeView;
 import ru.chipenable.bakingapp.ui.other.RecipeAdapter;
@@ -55,7 +55,7 @@ public class RecipeFragment extends MvpAppCompatFragment implements IRecipeView 
     }
 
     @Override
-    public void showRecipes(List<RecipeViewModel> list) {
+    public void showRecipes(List<Recipe> list) {
         recipeAdapter.setItems(list);
     }
 }
