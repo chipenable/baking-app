@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public abstract class Step {
 
     @SerializedName("id")
-    private int id;
+    public abstract int id();
 
     @SerializedName("shortDescription")
     public abstract String shortDescription();
@@ -26,6 +26,20 @@ public abstract class Step {
 
     public static TypeAdapter<Step> typeAdapter(Gson gson) {
         return new AutoValue_Step.GsonTypeAdapter(gson);
+    }
+
+    public static Builder builder() {
+        return new AutoValue_Step.Builder();
+    }
+
+    @AutoValue.Builder
+    public abstract static class Builder {
+        public abstract Builder setId(int id);
+        public abstract Builder setShortDescription(String description);
+        public abstract Builder setDescription(String description);
+        public abstract Builder setVideoURL(String videoUrl);
+        public abstract Builder setThumbnailURL(String thumbnailUrl);
+        public abstract Step build();
     }
 
 }

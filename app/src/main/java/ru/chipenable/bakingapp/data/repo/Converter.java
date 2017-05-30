@@ -67,6 +67,38 @@ public class Converter {
         return list;
     }
 
+    public Recipe toRecipe(Cursor cursor){
+        List<Step> stepList = new ArrayList<>();
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                String description = getString(cursor, StepEntry.COL_DESCRIPTION);
+                String shortDescription = getString(cursor, StepEntry.COL_SHORT_DESCRIPTION);
+                String videoUrl = getString(cursor, StepEntry.COL_VIDEO_URL);
+                String thumbnailUrl = getString(cursor, StepEntry.COL_THUMBNAIL_URL);
+                Step step = Step.builder()
+                        .setId(0)
+                        .setShortDescription(shortDescription)
+                        .setDescription(description)
+                        .setVideoURL(videoUrl)
+                        .setThumbnailURL(thumbnailUrl)
+                        .build();
+                stepList.add(step);
+            } while (cursor.moveToNext());
+        }
+
+        return Recipe.builder()
+                .setId(0)
+                .setName("")
+                .setSteps(stepList)
+                .setIngredients(new ArrayList<>())
+                .setServings(0)
+                .setImageUrl("")
+                .build();
+    }
+
+    /** helper methods */
+
     private long getLong(Cursor cursor, String colName){
         int colInd = cursor.getColumnIndex(colName);
         return cursor.getLong(colInd);

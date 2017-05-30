@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements INavigator {
     public void handleCommand(Command command) {
         if (command == Command.SHOW_DETAILS){
             getSupportFragmentManager().beginTransaction()
-                    .replace(detailcontainerId, new RecipeDetailsFragment())
+                    .replace(mainContainerId, new RecipeDetailsFragment())
                     .addToBackStack(null)
                     .commit();
         }

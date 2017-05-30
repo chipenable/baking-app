@@ -16,4 +16,6 @@ public interface IRepo {
 
     Observable<List<Recipe>> getRecipes();
 
+    Observable<Recipe> getRecipe(long id);
+
 }

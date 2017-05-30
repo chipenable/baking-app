@@ -61,6 +61,22 @@ public class Repo implements IRepo {
         });
     }
 
+    @Override
+    public Observable<Recipe> getRecipe(long id) {
+        return Observable.fromCallable(() -> {
+            SQLiteDatabase db = repoHelper.getReadableDatabase();
+            String selection = RepoContract.StepEntry.COL_RECIPE_ID + " =? ";
+            String[] selArgs = {Long.toString(id)};
+            Cursor cursor = db.query(RepoContract.StepEntry.TABLE_NAME, null, selection, selArgs,
+                    null, null, null);
+            Recipe recipe = converter.toRecipe(cursor);
+            cursor.close();
+            return recipe;
+        });
+    }
+
+    /** helper methods */
+
     private Observable<List<Recipe>> getAllRecipes() {
         return Observable.fromCallable(() -> {
             SQLiteDatabase db = repoHelper.getReadableDatabase();
