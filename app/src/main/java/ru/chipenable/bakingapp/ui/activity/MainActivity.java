@@ -12,6 +12,7 @@ import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.INavigator;
 import ru.chipenable.bakingapp.model.navigation.Router;
+import ru.chipenable.bakingapp.ui.fragment.IngredientsFragment;
 import ru.chipenable.bakingapp.ui.fragment.RecipeDetailsFragment;
 import ru.chipenable.bakingapp.ui.fragment.RecipeFragment;
 
@@ -46,11 +47,24 @@ public class MainActivity extends AppCompatActivity implements INavigator {
 
     @Override
     public void handleCommand(Command command) {
-        if (command == Command.SHOW_DETAILS){
-            getSupportFragmentManager().beginTransaction()
-                    .replace(mainContainerId, new RecipeDetailsFragment())
-                    .addToBackStack(null)
-                    .commit();
+        switch(command) {
+            case SHOW_DETAILS: {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(mainContainerId, new RecipeDetailsFragment())
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            }
+
+            case SHOW_INGREDIENTS:{
+                getSupportFragmentManager().beginTransaction()
+                        .replace(mainContainerId, new IngredientsFragment())
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            }
+
+            default:
         }
     }
 

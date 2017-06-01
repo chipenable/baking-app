@@ -6,6 +6,7 @@ package ru.chipenable.bakingapp.model.navigation;
 
 public enum Command {
 
-    SHOW_DETAILS
+    SHOW_DETAILS,
+    SHOW_INGREDIENTS
 
 }

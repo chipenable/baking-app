@@ -1,5 +1,7 @@
 package ru.chipenable.bakingapp.presentation.presenter;
 
+import android.os.Bundle;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
@@ -9,6 +11,7 @@ import io.reactivex.disposables.Disposable;
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.interactor.RecipeDetailsInteractor;
 import ru.chipenable.bakingapp.interactor.RecipeInteractor;
+import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.presentation.view.IRecipeDetailsView;
 
@@ -23,15 +26,21 @@ public class RecipeDetailsPresenter extends MvpPresenter<IRecipeDetailsView> {
     @Inject RecipeDetailsInteractor recipeDetailsInteractor;
 
     private Disposable disposable;
+    private long id;
 
     public RecipeDetailsPresenter(AppComponent component){
         component.inject(this);
     }
 
     @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        id = router.getArguments().getLong("ID");
+    }
+
+    @Override
     public void attachView(IRecipeDetailsView view) {
         super.attachView(view);
-        long id = router.getArguments().getLong("ID");
         disposable = recipeDetailsInteractor.getRecipe(id)
                 .subscribe(recipe -> getViewState().showDetails(recipe));
     }
@@ -41,4 +50,10 @@ public class RecipeDetailsPresenter extends MvpPresenter<IRecipeDetailsView> {
         super.detachView(view);
         disposable.dispose();
     }
+
+    public void onIngredientsClick(){
+        Bundle args = new Bundle();
+        router.putCommand(Command.SHOW_INGREDIENTS, args);
+    }
+
 }

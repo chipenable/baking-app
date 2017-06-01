@@ -53,7 +53,7 @@ public class RecipeDetailsFragment extends MvpAppCompatFragment implements IReci
 
         stepAdapter = new StepAdapter();
         stepAdapter.setStepsClickListener(position -> {});
-        stepAdapter.setIngredientsClickListener(() -> {});
+        stepAdapter.setIngredientsClickListener(() -> presenter.onIngredientsClick());
         stepRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         stepRecyclerView.setAdapter(stepAdapter);
 

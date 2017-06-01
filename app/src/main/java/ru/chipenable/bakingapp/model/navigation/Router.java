@@ -12,6 +12,7 @@ public class Router {
 
     private WeakReference<INavigator> navigator;
     private Bundle arguments;
+    
 
     public Router(){
         navigator = new WeakReference<>(command -> {});
