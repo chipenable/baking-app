@@ -52,7 +52,8 @@ public class RecipeDetailsFragment extends MvpAppCompatFragment implements IReci
         ButterKnife.bind(this, view);
 
         stepAdapter = new StepAdapter();
-        stepAdapter.setItemClickListener(position -> {});
+        stepAdapter.setStepsClickListener(position -> {});
+        stepAdapter.setIngredientsClickListener(() -> {});
         stepRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         stepRecyclerView.setAdapter(stepAdapter);
 

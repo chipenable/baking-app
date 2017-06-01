@@ -22,17 +22,28 @@ import ru.chipenable.bakingapp.model.Step;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
 
+    private static final int INGREDIENT_VIEW_TYPE = 0;
+    private static final int STEP_VIEW_TYPE = 1;
 
     private List<Step> stepList;
     private List<Ingredient> ingredientList;
-    private IOnItemClickListener itemClickListener;
+    private IOnIngredientsClickListener ingredientsClickListener;
+    private IOnStepsClickListener stepsClickListener;
 
-    public interface IOnItemClickListener{
-        void onItemClick(int position);
+    public interface IOnIngredientsClickListener{
+        void onIngredientsClick();
     }
 
-    public void setItemClickListener(IOnItemClickListener listener){
-        itemClickListener = listener;
+    public interface IOnStepsClickListener{
+        void onStepClick(int position);
+    }
+
+    public void setIngredientsClickListener(IOnIngredientsClickListener listener){
+        ingredientsClickListener = listener;
+    }
+
+    public void setStepsClickListener(IOnStepsClickListener listener){
+        stepsClickListener = listener;
     }
 
     public StepAdapter(){
@@ -51,6 +62,11 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position == 0? INGREDIENT_VIEW_TYPE:STEP_VIEW_TYPE;
+    }
+
+    @Override
     public StepAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_detail_item,
                 parent, false);
@@ -59,12 +75,19 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(StepAdapter.ViewHolder holder, int position) {
-        holder.bind(stepList.get(position));
+        switch(getItemViewType(position)){
+            case INGREDIENT_VIEW_TYPE:
+                holder.bindIngredient();
+                return;
+            case STEP_VIEW_TYPE:
+                holder.bindStep(stepList.get(position - 1));
+                return;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return stepList == null? 0:stepList.size();
+        return stepList == null? 0:stepList.size() + 1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -77,14 +100,26 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
             view.setOnClickListener(this);
         }
 
-        public void bind(Step step){
-            recipeNameView.setText(step.description());
+        public void bindIngredient(){
+            recipeNameView.setText(R.string.ingredients);
+        }
+
+        public void bindStep(Step step){
+            recipeNameView.setText(step.shortDescription());
         }
 
         @Override
         public void onClick(View v) {
-            if (itemClickListener != null){
-                itemClickListener.onItemClick(getAdapterPosition());
+            switch(getItemViewType()){
+                case INGREDIENT_VIEW_TYPE:
+                    if (ingredientsClickListener != null){
+                        ingredientsClickListener.onIngredientsClick();
+                    }
+                    break;
+                case STEP_VIEW_TYPE:
+                    if (stepsClickListener != null){
+                        stepsClickListener.onStepClick(getAdapterPosition() - 1);
+                    }
             }
         }
     }
