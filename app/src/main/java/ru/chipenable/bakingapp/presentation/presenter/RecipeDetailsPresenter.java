@@ -35,7 +35,8 @@ public class RecipeDetailsPresenter extends MvpPresenter<IRecipeDetailsView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        id = router.getArguments().getLong("ID");
+        Bundle args = router.getArguments(getClass().getName());
+        id = args.getLong("ID");
     }
 
     @Override
@@ -53,7 +54,7 @@ public class RecipeDetailsPresenter extends MvpPresenter<IRecipeDetailsView> {
 
     public void onIngredientsClick(){
         Bundle args = new Bundle();
-        router.putCommand(Command.SHOW_INGREDIENTS, args);
+        router.putCommand(Command.SHOW_INGREDIENTS, IngredientsPresenter.class.getName(), args);
     }
 
 }

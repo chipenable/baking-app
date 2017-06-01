@@ -63,7 +63,7 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
     public void showDetails(int position){
         Bundle args = new Bundle();
         args.putLong("ID", recipeList.get(position).id());
-        router.putCommand(Command.SHOW_DETAILS, args);
+        router.putCommand(Command.SHOW_DETAILS, RecipeDetailsPresenter.class.getName(), args);
     }
 
 
