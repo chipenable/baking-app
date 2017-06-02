@@ -20,7 +20,7 @@ import ru.chipenable.bakingapp.di.ApplicationContext;
 public class RepoHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "recipes.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     @Inject
     public RepoHelper(@ApplicationContext Context context) {
@@ -49,6 +49,7 @@ public class RepoHelper extends SQLiteOpenHelper {
         createTable = "CREATE TABLE " + StepEntry.TABLE_NAME + " (" +
                 StepEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 StepEntry.COL_RECIPE_ID + " INTEGER, " +
+                StepEntry.COL_STEP_NUM + " INTEGER, " +
                 StepEntry.COL_SHORT_DESCRIPTION + " TEXT, " +
                 StepEntry.COL_DESCRIPTION + " TEXT, " +
                 StepEntry.COL_VIDEO_URL + " TEXT, " +

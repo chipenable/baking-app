@@ -1,5 +1,5 @@
 
-package ru.chipenable.bakingapp.model;
+package ru.chipenable.bakingapp.model.data;
 
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;

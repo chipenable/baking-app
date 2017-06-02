@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -19,7 +21,7 @@ import butterknife.ButterKnife;
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.di.AppComponent;
-import ru.chipenable.bakingapp.model.Recipe;
+import ru.chipenable.bakingapp.model.data.Recipe;
 import ru.chipenable.bakingapp.presentation.presenter.RecipePresenter;
 import ru.chipenable.bakingapp.presentation.view.IRecipeView;
 import ru.chipenable.bakingapp.ui.other.RecipeAdapter;
@@ -31,6 +33,9 @@ import ru.chipenable.bakingapp.ui.other.RecipeAdapter;
 public class RecipeFragment extends MvpAppCompatFragment implements IRecipeView {
 
     @BindView(R.id.recipe_list) RecyclerView recipeRecyclerView;
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.shield) FrameLayout shield;
+
     @InjectPresenter RecipePresenter presenter;
 
     private RecipeAdapter recipeAdapter;
@@ -58,4 +63,21 @@ public class RecipeFragment extends MvpAppCompatFragment implements IRecipeView 
     public void showRecipes(List<Recipe> list) {
         recipeAdapter.setItems(list);
     }
+
+    @Override
+    public void showLoading() {
+        enableProgressBar(true);
+    }
+
+    @Override
+    public void hideLoading() {
+        enableProgressBar(false);
+    }
+
+    private void enableProgressBar(boolean enable){
+        int visibility = enable? View.VISIBLE:View.GONE;
+        progressBar.setVisibility(visibility);
+        shield.setVisibility(visibility);
+    }
+
 }

@@ -10,12 +10,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import ru.chipenable.bakingapp.di.AppComponent;
-import ru.chipenable.bakingapp.di.UiScheduler;
 import ru.chipenable.bakingapp.interactor.RecipeInteractor;
-import ru.chipenable.bakingapp.model.Recipe;
+import ru.chipenable.bakingapp.model.data.Recipe;
 import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.presentation.view.IRecipeView;
@@ -41,6 +39,8 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         recipeInteractor.updateRecipes()
+                .doOnSubscribe(result -> getViewState().showLoading())
+                .doAfterTerminate(() -> getViewState().hideLoading())
                 .subscribe(aLong -> {}, throwable -> Log.d(TAG, throwable.toString()), () -> {});
     }
 
@@ -63,6 +63,7 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
     public void showDetails(int position){
         Bundle args = new Bundle();
         args.putLong("ID", recipeList.get(position).id());
+        args.putInt("STEP", position);
         router.putCommand(Command.SHOW_DETAILS, RecipeDetailsPresenter.class.getName(), args);
     }
 

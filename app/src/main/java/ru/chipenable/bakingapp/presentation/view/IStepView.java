@@ -4,15 +4,15 @@ import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
-import ru.chipenable.bakingapp.model.data.Recipe;
+import ru.chipenable.bakingapp.model.data.Step;
 
 /**
- * Created by Pavel.B on 25.05.2017.
+ * Created by Pavel.B on 02.06.2017.
  */
 
-public interface IRecipeDetailsView extends MvpView {
+public interface IStepView extends MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy.class)
-    void showDetails(Recipe recipe);
+    void showStep(Step step);
 
 }

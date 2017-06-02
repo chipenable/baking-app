@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.di.AppComponent;
-import ru.chipenable.bakingapp.model.Recipe;
+import ru.chipenable.bakingapp.model.data.Recipe;
 import ru.chipenable.bakingapp.presentation.presenter.RecipeDetailsPresenter;
 import ru.chipenable.bakingapp.presentation.view.IRecipeDetailsView;
 import ru.chipenable.bakingapp.ui.other.StepAdapter;
@@ -52,7 +52,7 @@ public class RecipeDetailsFragment extends MvpAppCompatFragment implements IReci
         ButterKnife.bind(this, view);
 
         stepAdapter = new StepAdapter();
-        stepAdapter.setStepsClickListener(position -> {});
+        stepAdapter.setStepsClickListener(position -> presenter.onStepClick(position));
         stepAdapter.setIngredientsClickListener(() -> presenter.onIngredientsClick());
         stepRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         stepRecyclerView.setAdapter(stepAdapter);

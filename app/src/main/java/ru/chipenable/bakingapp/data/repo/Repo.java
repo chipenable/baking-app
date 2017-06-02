@@ -12,9 +12,9 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 import ru.chipenable.bakingapp.BuildConfig;
-import ru.chipenable.bakingapp.model.Ingredient;
-import ru.chipenable.bakingapp.model.Recipe;
-import ru.chipenable.bakingapp.model.Step;
+import ru.chipenable.bakingapp.model.data.Ingredient;
+import ru.chipenable.bakingapp.model.data.Recipe;
+import ru.chipenable.bakingapp.model.data.Step;
 
 
 /**
@@ -72,6 +72,22 @@ public class Repo implements IRepo {
             Recipe recipe = converter.toRecipe(cursor);
             cursor.close();
             return recipe;
+        });
+    }
+
+    @Override
+    public Observable<Step> getStep(long id, int num) {
+        return Observable.fromCallable(() -> {
+            SQLiteDatabase db = repoHelper.getReadableDatabase();
+            String selection = RepoContract.StepEntry.COL_RECIPE_ID + " =? AND " +
+                    RepoContract.StepEntry.COL_STEP_NUM + " =?";
+            String[] selArgs = {Long.toString(id), Integer.toString(num)};
+            Cursor cursor = db.query(RepoContract.StepEntry.TABLE_NAME, null, selection, selArgs,
+                    null, null, null);
+            Step step = converter.toStep(cursor);
+            cursor.close();
+            return step;
+
         });
     }
 

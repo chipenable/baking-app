@@ -31,6 +31,7 @@ public final class RepoContract {
         public static final String TABLE_NAME = "step_table";
 
         public static final String COL_RECIPE_ID = "recipe_id";
+        public static final String COL_STEP_NUM = "step_num";
         public static final String COL_SHORT_DESCRIPTION = "shortDescription";
         public static final String COL_DESCRIPTION = "description";
         public static final String COL_VIDEO_URL = "videoUrl";

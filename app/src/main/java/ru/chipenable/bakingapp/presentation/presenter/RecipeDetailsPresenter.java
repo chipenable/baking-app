@@ -57,4 +57,11 @@ public class RecipeDetailsPresenter extends MvpPresenter<IRecipeDetailsView> {
         router.putCommand(Command.SHOW_INGREDIENTS, IngredientsPresenter.class.getName(), args);
     }
 
+    public void onStepClick(int position){
+        Bundle args = new Bundle();
+        args.putLong("ID", id);
+        args.putInt("STEP", position);
+        router.putCommand(Command.SHOW_STEP, StepPresenter.class.getName(), args);
+    }
+
 }

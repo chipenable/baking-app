@@ -3,7 +3,8 @@ package ru.chipenable.bakingapp.data.repo;
 import java.util.List;
 
 import io.reactivex.Observable;
-import ru.chipenable.bakingapp.model.Recipe;
+import ru.chipenable.bakingapp.model.data.Recipe;
+import ru.chipenable.bakingapp.model.data.Step;
 
 
 /**
@@ -17,5 +18,7 @@ public interface IRepo {
     Observable<List<Recipe>> getRecipes();
 
     Observable<Recipe> getRecipe(long id);
+
+    Observable<Step> getStep(long recipeId, int num);
 
 }

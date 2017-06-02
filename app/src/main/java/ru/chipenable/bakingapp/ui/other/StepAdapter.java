@@ -12,9 +12,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.chipenable.bakingapp.R;
-import ru.chipenable.bakingapp.model.Ingredient;
-import ru.chipenable.bakingapp.model.Recipe;
-import ru.chipenable.bakingapp.model.Step;
+import ru.chipenable.bakingapp.model.data.Ingredient;
+import ru.chipenable.bakingapp.model.data.Recipe;
+import ru.chipenable.bakingapp.model.data.Step;
 
 /**
  * Created by Pavel.B on 18.05.2017.

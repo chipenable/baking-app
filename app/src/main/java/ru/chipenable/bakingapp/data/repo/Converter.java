@@ -6,9 +6,9 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.chipenable.bakingapp.model.Ingredient;
-import ru.chipenable.bakingapp.model.Recipe;
-import ru.chipenable.bakingapp.model.Step;
+import ru.chipenable.bakingapp.model.data.Ingredient;
+import ru.chipenable.bakingapp.model.data.Recipe;
+import ru.chipenable.bakingapp.model.data.Step;
 
 import static ru.chipenable.bakingapp.data.repo.RepoContract.*;
 
@@ -29,6 +29,7 @@ public class Converter {
     public ContentValues toContentValues(long recipeId, Step step){
         ContentValues cv = new ContentValues();
         cv.put(StepEntry.COL_RECIPE_ID, recipeId);
+        cv.put(StepEntry.COL_STEP_NUM, step.id());
         cv.put(StepEntry.COL_DESCRIPTION, step.description());
         cv.put(StepEntry.COL_SHORT_DESCRIPTION, step.shortDescription());
         cv.put(StepEntry.COL_THUMBNAIL_URL, step.thumbnailURL());
@@ -94,6 +95,31 @@ public class Converter {
                 .setIngredients(new ArrayList<>())
                 .setServings(0)
                 .setImageUrl("")
+                .build();
+    }
+
+    public Step toStep(Cursor cursor){
+        int num = 0;
+        String shortDescription = "";
+        String description = "";
+        String videoUrl = "";
+        String thumbnailUrl = "";
+
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            num = getInt(cursor, StepEntry.COL_STEP_NUM);
+            shortDescription = getString(cursor, StepEntry.COL_SHORT_DESCRIPTION);
+            description = getString(cursor, StepEntry.COL_DESCRIPTION);
+            videoUrl = getString(cursor, StepEntry.COL_VIDEO_URL);
+            thumbnailUrl = getString(cursor, StepEntry.COL_THUMBNAIL_URL);
+        }
+
+        return Step.builder()
+                .setId(num)
+                .setShortDescription(shortDescription)
+                .setDescription(description)
+                .setVideoURL(videoUrl)
+                .setThumbnailURL(thumbnailUrl)
                 .build();
     }
 

@@ -1,8 +1,11 @@
 package ru.chipenable.bakingapp.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.IntRange;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
@@ -15,6 +18,7 @@ import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.ui.fragment.IngredientsFragment;
 import ru.chipenable.bakingapp.ui.fragment.RecipeDetailsFragment;
 import ru.chipenable.bakingapp.ui.fragment.RecipeFragment;
+import ru.chipenable.bakingapp.ui.fragment.StepFragment;
 
 public class MainActivity extends AppCompatActivity implements INavigator {
 
@@ -49,18 +53,17 @@ public class MainActivity extends AppCompatActivity implements INavigator {
     public void handleCommand(Command command) {
         switch(command) {
             case SHOW_DETAILS: {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(mainContainerId, new RecipeDetailsFragment())
-                        .addToBackStack(null)
-                        .commit();
+                replaceFragment(mainContainerId, new RecipeDetailsFragment(), true);
                 break;
             }
 
             case SHOW_INGREDIENTS:{
-                getSupportFragmentManager().beginTransaction()
-                        .replace(mainContainerId, new IngredientsFragment())
-                        .addToBackStack(null)
-                        .commit();
+                replaceFragment(mainContainerId, new IngredientsFragment(), true);
+                break;
+            }
+
+            case SHOW_STEP:{
+                replaceFragment(mainContainerId, new StepFragment(), true);
                 break;
             }
 
@@ -72,6 +75,15 @@ public class MainActivity extends AppCompatActivity implements INavigator {
         mainContainerId = R.id.master_container;
         boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
         detailcontainerId = isTablet? R.id.detail_container:R.id.master_container;
+    }
+
+    private void replaceFragment(@IdRes int containerId, Fragment f, boolean addToBackStack){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(containerId, f);
+        if (addToBackStack){
+            ft.addToBackStack(null);
+        }
+        ft.commit();
     }
 
 }

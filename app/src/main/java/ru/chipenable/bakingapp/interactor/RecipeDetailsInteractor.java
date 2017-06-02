@@ -7,7 +7,8 @@ import io.reactivex.Scheduler;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.di.IoScheduler;
 import ru.chipenable.bakingapp.di.UiScheduler;
-import ru.chipenable.bakingapp.model.Recipe;
+import ru.chipenable.bakingapp.model.data.Recipe;
+import ru.chipenable.bakingapp.model.data.Step;
 
 /**
  * Created by Pavel.B on 29.05.2017.
@@ -29,6 +30,12 @@ public class RecipeDetailsInteractor {
 
     public Observable<Recipe> getRecipe(long id){
         return repo.getRecipe(id)
+                .subscribeOn(ioScheduler)
+                .observeOn(uiScheduler);
+    }
+
+    public Observable<Step> getStep(long recipeId, int stepNum){
+        return repo.getStep(recipeId, stepNum)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler);
     }

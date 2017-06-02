@@ -6,5 +6,6 @@
     <color name="pressedItem">#aa424242</color>
     <color name="disableItem">#666666</color>
     <color name="grey">#555555</color>
+    <color name="shield_color">#55555555</color>
     <color name="recipe_item_stroke">#bdbdbd</color>
 </resources>

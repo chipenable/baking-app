@@ -6,7 +6,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 import java.util.List;
 
-import ru.chipenable.bakingapp.model.Recipe;
+import ru.chipenable.bakingapp.model.data.Recipe;
 
 
 /**
@@ -17,5 +17,11 @@ public interface IRecipeView extends MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy.class)
     void showRecipes(List<Recipe> list);
+
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void showLoading();
+
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void hideLoading();
 
 }

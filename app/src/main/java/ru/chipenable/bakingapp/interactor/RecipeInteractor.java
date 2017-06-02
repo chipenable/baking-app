@@ -10,7 +10,7 @@ import ru.chipenable.bakingapp.data.network.HttpClient;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.di.IoScheduler;
 import ru.chipenable.bakingapp.di.UiScheduler;
-import ru.chipenable.bakingapp.model.Recipe;
+import ru.chipenable.bakingapp.model.data.Recipe;
 
 /**
  * Created by Pavel.B on 26.05.2017.

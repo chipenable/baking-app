@@ -4,7 +4,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
-import ru.chipenable.bakingapp.model.Recipe;
+import ru.chipenable.bakingapp.model.data.Recipe;
 
 /**
  * Created by Pavel.B on 25.05.2017.

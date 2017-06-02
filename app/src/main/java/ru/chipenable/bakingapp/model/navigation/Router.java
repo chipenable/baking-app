@@ -14,7 +14,6 @@ public class Router {
     private WeakReference<INavigator> navigator;
     private HashMap<String, Bundle> argumentMap;
 
-
     public Router(){
         navigator = new WeakReference<>(command -> {});
         argumentMap = new HashMap<>();
