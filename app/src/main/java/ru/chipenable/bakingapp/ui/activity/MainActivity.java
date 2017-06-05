@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements INavigator {
             }
 
             case SHOW_STEP:{
-                replaceFragment(mainContainerId, new StepFragment(), true);
+                replaceFragment(detailcontainerId, new StepFragment(), false);
                 break;
             }
 
