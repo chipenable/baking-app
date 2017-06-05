@@ -7,9 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.model.navigation.Command;
@@ -23,9 +27,11 @@ import ru.chipenable.bakingapp.ui.fragment.StepFragment;
 public class MainActivity extends AppCompatActivity implements INavigator {
 
     @Inject Router router;
+    @BindView(R.id.detail_container) FrameLayout detailContainer;
 
     private int mainContainerId;
     private int detailcontainerId;
+    private boolean isTablet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +39,9 @@ public class MainActivity extends AppCompatActivity implements INavigator {
         setContentView(R.layout.activity_main);
         ((BakingApp)getApplication()).getAppComponent().inject(this);
         checkConfiguration();
+        ButterKnife.bind(this);
 
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment f = fm.findFragmentById(R.id.master_container);
-        if (f == null) {
-            fm.beginTransaction()
-                    .add(mainContainerId, new RecipeFragment())
-                    .commit();
-        }
+        showRecipeList();
     }
 
     @Override
@@ -50,20 +51,26 @@ public class MainActivity extends AppCompatActivity implements INavigator {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        detailContainer.setVisibility(View.GONE);
+    }
+
+    @Override
     public void handleCommand(Command command) {
         switch(command) {
             case SHOW_DETAILS: {
-                replaceFragment(mainContainerId, new RecipeDetailsFragment(), true);
+                showDetails();
                 break;
             }
 
             case SHOW_INGREDIENTS:{
-                replaceFragment(mainContainerId, new IngredientsFragment(), true);
+                showIngredients();
                 break;
             }
 
             case SHOW_STEP:{
-                replaceFragment(detailcontainerId, new StepFragment(), false);
+                showStep();
                 break;
             }
 
@@ -73,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements INavigator {
 
     private void checkConfiguration(){
         mainContainerId = R.id.master_container;
-        boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
-        detailcontainerId = isTablet? R.id.detail_container:R.id.master_container;
+        detailcontainerId = R.id.detail_container;
+        isTablet = getResources().getBoolean(R.bool.is_tablet);
     }
 
     private void replaceFragment(@IdRes int containerId, Fragment f, boolean addToBackStack){
@@ -85,5 +92,46 @@ public class MainActivity extends AppCompatActivity implements INavigator {
         }
         ft.commit();
     }
+
+    private void showRecipeList(){
+        if (isTablet){
+            detailContainer.setVisibility(View.GONE);
+            replaceFragment(mainContainerId, new RecipeFragment(), true);
+        }
+        else{
+            replaceFragment(mainContainerId, new RecipeFragment(), true);
+        }
+    }
+
+    private void showDetails(){
+        if (isTablet){
+            detailContainer.setVisibility(View.VISIBLE);
+            replaceFragment(mainContainerId, new RecipeDetailsFragment(), true);
+            replaceFragment(detailcontainerId, new IngredientsFragment(), false);
+        }
+        else{
+            replaceFragment(mainContainerId, new RecipeDetailsFragment(), true);
+        }
+    }
+
+    private void showIngredients(){
+        if (isTablet){
+            replaceFragment(detailcontainerId, new IngredientsFragment(), false);
+        }
+        else{
+            replaceFragment(mainContainerId, new IngredientsFragment(), true);
+        }
+    }
+
+    private void showStep(){
+        if (isTablet){
+            replaceFragment(detailcontainerId, new StepFragment(), false);
+        }
+        else{
+            replaceFragment(mainContainerId, new StepFragment(), true);
+        }
+    }
+
+
 
 }
