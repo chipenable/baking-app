@@ -1,10 +1,9 @@
 package ru.chipenable.bakingapp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.IntRange;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -17,30 +16,21 @@ import ru.chipenable.bakingapp.model.navigation.INavigator;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.ui.fragment.IngredientsFragment;
 import ru.chipenable.bakingapp.ui.fragment.RecipeDetailsFragment;
-import ru.chipenable.bakingapp.ui.fragment.RecipeFragment;
 import ru.chipenable.bakingapp.ui.fragment.StepFragment;
 
-public class MainActivity extends AppCompatActivity implements INavigator {
+public class RecipeDetailsActivity extends AppCompatActivity implements INavigator {
 
     @Inject Router router;
 
-    private int mainContainerId;
-    private int detailcontainerId;
+    private boolean isTablet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recipe_details);
         ((BakingApp)getApplication()).getAppComponent().inject(this);
         checkConfiguration();
-
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment f = fm.findFragmentById(R.id.master_container);
-        if (f == null) {
-            fm.beginTransaction()
-                    .add(mainContainerId, new RecipeFragment())
-                    .commit();
-        }
+        showRecipeDetails();
     }
 
     @Override
@@ -52,18 +42,14 @@ public class MainActivity extends AppCompatActivity implements INavigator {
     @Override
     public void handleCommand(Command command) {
         switch(command) {
-            case SHOW_DETAILS: {
-                replaceFragment(mainContainerId, new RecipeDetailsFragment(), true);
-                break;
-            }
 
             case SHOW_INGREDIENTS:{
-                replaceFragment(mainContainerId, new IngredientsFragment(), true);
+                showIngredients();
                 break;
             }
 
             case SHOW_STEP:{
-                replaceFragment(mainContainerId, new StepFragment(), true);
+                showStep();
                 break;
             }
 
@@ -72,9 +58,37 @@ public class MainActivity extends AppCompatActivity implements INavigator {
     }
 
     private void checkConfiguration(){
-        mainContainerId = R.id.master_container;
-        boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
-        detailcontainerId = isTablet? R.id.detail_container:R.id.master_container;
+        isTablet = getResources().getBoolean(R.bool.is_tablet);
+    }
+
+    private void showRecipeDetails(){
+        if (isTablet){
+            replaceFragment(R.id.master_container, new RecipeDetailsFragment(), false);
+            replaceFragment(R.id.detail_container, new IngredientsFragment(), false);
+        }
+        else{
+            replaceFragment(R.id.master_container, new RecipeDetailsFragment(), false);
+        }
+    }
+
+    private void showIngredients(){
+        if (isTablet){
+            replaceFragment(R.id.detail_container, new IngredientsFragment(), false);
+        }
+        else{
+            Intent intent = new Intent(this, IngredientActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void showStep(){
+        if (isTablet){
+            replaceFragment(R.id.detail_container, new StepFragment(), false);
+        }
+        else{
+            Intent intent = new Intent(this, StepActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void replaceFragment(@IdRes int containerId, Fragment f, boolean addToBackStack){

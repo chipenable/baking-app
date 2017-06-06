@@ -12,12 +12,15 @@ import android.widget.TextView;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.di.AppComponent;
+import ru.chipenable.bakingapp.helper.player.ExoPlayer;
+import ru.chipenable.bakingapp.helper.player.IVideoPlayer;
 import ru.chipenable.bakingapp.model.data.Step;
 import ru.chipenable.bakingapp.presentation.presenter.StepPresenter;
 import ru.chipenable.bakingapp.presentation.view.IStepView;
@@ -30,7 +33,7 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     @InjectPresenter
     StepPresenter stepPresenter;
 
-    @BindView(R.id.video_frame) FrameLayout videoFrame;
+    @BindView(R.id.player_view) SimpleExoPlayerView playerView;
     @BindView(R.id.step_description)  TextView stepDescriptionView;
 
     @ProvidePresenter
@@ -54,6 +57,8 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
 
     @Override
     public void showStep(Step step) {
+        IVideoPlayer videoPlayer = ExoPlayer.getInstance(getContext(), playerView,
+                step.videoURL(), step.thumbnailURL());
         stepDescriptionView.setText(step.description());
     }
 }
