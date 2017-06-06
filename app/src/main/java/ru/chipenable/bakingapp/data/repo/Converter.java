@@ -41,7 +41,7 @@ public class Converter {
         ContentValues cv = new ContentValues();
         cv.put(IngredientEntry.COL_RECIPE_ID, recipeId);
         cv.put(IngredientEntry.COL_INGREDIENT, ingredient.ingredient());
-        cv.put(IngredientEntry.COL_MEASURE, ingredient.measure());
+        cv.put(IngredientEntry.COL_MEASURE, ingredient.quantity());
         cv.put(IngredientEntry.COL_QUANTITY, ingredient.measure());
         return cv;
     }
@@ -123,6 +123,20 @@ public class Converter {
                 .build();
     }
 
+    public List<Ingredient> toIngredients(Cursor cursor){
+        List<Ingredient> list = new ArrayList<>();
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
+            do{
+                float quantity = getFloat(cursor, IngredientEntry.COL_QUANTITY);
+                String measure = getString(cursor, IngredientEntry.COL_MEASURE);
+                String ingredient = getString(cursor, IngredientEntry.COL_INGREDIENT);
+                list.add(Ingredient.create(quantity, measure, ingredient));
+            }while(cursor.moveToNext());
+        }
+        return list;
+    }
+
     /** helper methods */
 
     private long getLong(Cursor cursor, String colName){
@@ -138,6 +152,11 @@ public class Converter {
     private String getString(Cursor cursor, String colName){
         int colInd = cursor.getColumnIndex(colName);
         return cursor.getString(colInd);
+    }
+
+    private float getFloat(Cursor cursor, String colName){
+        int colInd = cursor.getColumnIndex(colName);
+        return cursor.getFloat(colInd);
     }
 
 }

@@ -32,7 +32,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     }
 
     public RecipeAdapter(){
-        this(new ArrayList<Recipe>());
+        this(new ArrayList<>());
     }
 
     public RecipeAdapter(List<Recipe> items){

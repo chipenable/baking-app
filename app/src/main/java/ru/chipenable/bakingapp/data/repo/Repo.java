@@ -23,7 +23,7 @@ import ru.chipenable.bakingapp.model.data.Step;
 
 public class Repo implements IRepo {
 
-    public boolean enableLog = BuildConfig.DEBUG;
+    public final boolean enableLog = BuildConfig.DEBUG;
     private final String TAG = getClass().getName();
     private final RepoHelper repoHelper;
     private final Converter converter;
@@ -45,19 +45,31 @@ public class Repo implements IRepo {
     @Override
     public Observable<Long> putRecipes(List<Recipe> recipeList) {
         return Observable.fromCallable(() -> {
+            long result = 0L;
             SQLiteDatabase db = repoHelper.getWritableDatabase();
             db.delete(RepoContract.RecipeEntry.TABLE_NAME, null, null);
             db.delete(RepoContract.StepEntry.TABLE_NAME, null, null);
             db.delete(RepoContract.IngredientEntry.TABLE_NAME, null, null);
-            for(Recipe recipe: recipeList) {
-                ContentValues cv = converter.toContentValues(recipe);
-                long recipeId = db.insert(RepoContract.RecipeEntry.TABLE_NAME, null, cv);
-                putSteps(db, recipeId, recipe.steps());
-                putIngredients(db, recipeId, recipe.ingredients());
+            try {
+                db.beginTransaction();
+                for (Recipe recipe : recipeList) {
+                    ContentValues cv = converter.toContentValues(recipe);
+                    long recipeId = db.insert(RepoContract.RecipeEntry.TABLE_NAME, null, cv);
+                    putSteps(db, recipeId, recipe.steps());
+                    putIngredients(db, recipeId, recipe.ingredients());
+                }
+                db.setTransactionSuccessful();
+                publishSubject.onNext(RepoEvent.UPDATE);
             }
+            catch(Exception e){
+                result = -1L;
+            }
+            finally {
+                db.endTransaction();
+            }
+
             logTable(RepoContract.RecipeEntry.TABLE_NAME);
-            publishSubject.onNext(RepoEvent.UPDATE);
-            return 0L;
+            return result;
         });
     }
 
@@ -87,7 +99,20 @@ public class Repo implements IRepo {
             Step step = converter.toStep(cursor);
             cursor.close();
             return step;
+        });
+    }
 
+    @Override
+    public Observable<List<Ingredient>> getIngredients(long recipeId) {
+        return Observable.fromCallable(() -> {
+            SQLiteDatabase db = repoHelper.getReadableDatabase();
+            String selection = RepoContract.StepEntry.COL_RECIPE_ID + " =?";
+            String[] selArgs = {Long.toString(recipeId)};
+            Cursor cursor = db.query(RepoContract.IngredientEntry.TABLE_NAME, null, selection, selArgs,
+                    null, null, null);
+            List<Ingredient> list = converter.toIngredients(cursor);
+            cursor.close();
+            return list;
         });
     }
 

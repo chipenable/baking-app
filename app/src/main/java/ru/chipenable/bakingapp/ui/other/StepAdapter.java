@@ -82,6 +82,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
             case STEP_VIEW_TYPE:
                 holder.bindStep(stepList.get(position - 1));
                 return;
+            default:
         }
     }
 

@@ -20,6 +20,8 @@ import ru.chipenable.bakingapp.data.repo.Converter;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.data.repo.Repo;
 import ru.chipenable.bakingapp.data.repo.RepoHelper;
+import ru.chipenable.bakingapp.interactor.RecipeDetailsInteractor;
+import ru.chipenable.bakingapp.interactor.RecipeInteractor;
 import ru.chipenable.bakingapp.model.navigation.Router;
 
 
@@ -30,7 +32,7 @@ import ru.chipenable.bakingapp.model.navigation.Router;
 @Module
 public class AppModule {
 
-    private Context context;
+    private final Context context;
 
     public AppModule(Context context){
         this.context = context;
@@ -39,13 +41,13 @@ public class AppModule {
     @ApplicationContext
     @Singleton
     @Provides
-    Context provideApplicationContext(){
+    public Context provideApplicationContext(){
         return context;
     }
 
     @Singleton
     @Provides
-    IRepo provideRepo(RepoHelper repoHelper){
+    public IRepo provideRepo(RepoHelper repoHelper){
         Converter converter = new Converter();
         return new Repo(repoHelper, converter);
     }
@@ -84,6 +86,22 @@ public class AppModule {
     @Provides
     public Scheduler provideUiScheduler(){
         return AndroidSchedulers.mainThread();
+    }
+
+    @Singleton
+    @Provides
+    public RecipeInteractor provideRecipeInteractor(IRepo repo, HttpClient client,
+                                                    @IoScheduler Scheduler ioScheduler,
+                                                    @UiScheduler Scheduler uiScheduler){
+        return new RecipeInteractor(repo, client, ioScheduler, uiScheduler);
+    }
+
+    @Singleton
+    @Provides
+    public RecipeDetailsInteractor provideRecipeDetailsInteractor(IRepo repo,
+                                                                  @IoScheduler Scheduler ioScheduler,
+                                                                  @UiScheduler Scheduler uiScheduler){
+        return new RecipeDetailsInteractor(repo, ioScheduler, uiScheduler);
     }
 
 }

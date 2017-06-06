@@ -1,12 +1,13 @@
 package ru.chipenable.bakingapp.interactor;
 
-import javax.inject.Inject;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.di.IoScheduler;
 import ru.chipenable.bakingapp.di.UiScheduler;
+import ru.chipenable.bakingapp.model.data.Ingredient;
 import ru.chipenable.bakingapp.model.data.Recipe;
 import ru.chipenable.bakingapp.model.data.Step;
 
@@ -20,7 +21,6 @@ public class RecipeDetailsInteractor {
     private Scheduler ioScheduler;
     private Scheduler uiScheduler;
 
-    @Inject
     public RecipeDetailsInteractor(IRepo repo, @IoScheduler Scheduler ioScheduler,
                                    @UiScheduler Scheduler uiScheduler){
         this.repo = repo;
@@ -36,6 +36,12 @@ public class RecipeDetailsInteractor {
 
     public Observable<Step> getStep(long recipeId, int stepNum){
         return repo.getStep(recipeId, stepNum)
+                .subscribeOn(ioScheduler)
+                .observeOn(uiScheduler);
+    }
+
+    public Observable<List<Ingredient>> getIngredients(long recipeId){
+        return repo.getIngredients(recipeId)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler);
     }

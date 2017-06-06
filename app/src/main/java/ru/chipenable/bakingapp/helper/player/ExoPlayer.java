@@ -3,11 +3,6 @@ package ru.chipenable.bakingapp.helper.player;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -44,7 +39,7 @@ public class ExoPlayer implements IVideoPlayer {
         return new ExoPlayer(context, playerView, videoUrl, thumbnailUrl);
     }
 
-    public ExoPlayer(Context context, SimpleExoPlayerView playerView, String videoUrl,
+    private ExoPlayer(Context context, SimpleExoPlayerView playerView, String videoUrl,
                      String thumbnailUrl){
 
         //create a default TrackSelector

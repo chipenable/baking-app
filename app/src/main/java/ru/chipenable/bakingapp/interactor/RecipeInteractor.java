@@ -2,8 +2,6 @@ package ru.chipenable.bakingapp.interactor;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import ru.chipenable.bakingapp.data.network.HttpClient;
@@ -23,7 +21,6 @@ public class RecipeInteractor {
     private Scheduler ioScheduler;
     private Scheduler uiScheduler;
 
-    @Inject
     public RecipeInteractor(IRepo repo, HttpClient client, @IoScheduler Scheduler ioScheduler,
                             @UiScheduler Scheduler uiScheduler){
         this.repo = repo;

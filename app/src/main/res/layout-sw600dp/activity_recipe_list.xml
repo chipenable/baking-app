@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<fragment
+    android:id="@+id/tablet_recipe_list"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:name="ru.chipenable.bakingapp.ui.fragment.RecipeFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="ru.chipenable.bakingapp.ui.activity.RecipeListActivity">
-
-    <FrameLayout
-        android:id="@+id/master_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-</android.support.constraint.ConstraintLayout>
+    android:layout_height="match_parent">
+</fragment>

@@ -22,4 +22,8 @@ public abstract class Ingredient {
         return new AutoValue_Ingredient.GsonTypeAdapter(gson);
     }
 
+    public static Ingredient create(float quantity, String measure, String ingredient){
+        return new AutoValue_Ingredient(quantity, measure, ingredient);
+    }
+
 }
