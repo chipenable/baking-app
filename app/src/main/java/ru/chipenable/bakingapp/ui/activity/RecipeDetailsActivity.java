@@ -6,6 +6,7 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import javax.inject.Inject;
 
@@ -14,6 +15,7 @@ import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.INavigator;
 import ru.chipenable.bakingapp.model.navigation.Router;
+import ru.chipenable.bakingapp.model.util.ActivityUtil;
 import ru.chipenable.bakingapp.ui.fragment.IngredientsFragment;
 import ru.chipenable.bakingapp.ui.fragment.RecipeDetailsFragment;
 import ru.chipenable.bakingapp.ui.fragment.StepFragment;
@@ -31,12 +33,23 @@ public class RecipeDetailsActivity extends AppCompatActivity implements INavigat
         ((BakingApp)getApplication()).getAppComponent().inject(this);
         checkConfiguration();
         showRecipeDetails();
+        ActivityUtil.setDisplayHomeAsUpEnabled(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         router.attachToNavigator(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

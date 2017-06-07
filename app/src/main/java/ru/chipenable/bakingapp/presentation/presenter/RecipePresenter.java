@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import io.reactivex.disposables.Disposable;
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.interactor.RecipeInteractor;
+import ru.chipenable.bakingapp.model.ArgumentKeys;
 import ru.chipenable.bakingapp.model.data.Recipe;
 import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.Router;
@@ -62,10 +63,9 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
 
     public void showDetails(int position){
         Bundle args = new Bundle();
-        args.putLong("ID", recipeList.get(position).id());
-        args.putInt("STEP", position);
+        args.putLong(ArgumentKeys.ID, recipeList.get(position).id());
+        args.putInt(ArgumentKeys.STEP, position);
         router.putCommand(Command.SHOW_DETAILS, RecipeDetailsPresenter.class.getName(), args);
     }
-
 
 }

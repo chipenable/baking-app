@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.interactor.RecipeDetailsInteractor;
+import ru.chipenable.bakingapp.model.ArgumentKeys;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.presentation.view.IIngredientsView;
 
@@ -34,7 +35,7 @@ public class IngredientsPresenter extends MvpPresenter<IIngredientsView> {
         super.onFirstViewAttach();
         Bundle args = router.getArguments(this.getClass().getName());
         if (args != null){
-            recipeId = args.getLong("ID");
+            recipeId = args.getLong(ArgumentKeys.ID);
         }
     }
 

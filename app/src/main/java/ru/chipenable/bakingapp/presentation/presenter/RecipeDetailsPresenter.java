@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import io.reactivex.disposables.Disposable;
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.interactor.RecipeDetailsInteractor;
+import ru.chipenable.bakingapp.model.ArgumentKeys;
 import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.presentation.view.IRecipeDetailsView;
@@ -35,7 +36,7 @@ public class RecipeDetailsPresenter extends MvpPresenter<IRecipeDetailsView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Bundle args = router.getArguments(getClass().getName());
-        id = args.getLong("ID");
+        id = args.getLong(ArgumentKeys.ID);
     }
 
     @Override
@@ -53,14 +54,14 @@ public class RecipeDetailsPresenter extends MvpPresenter<IRecipeDetailsView> {
 
     public void onIngredientsClick(){
         Bundle args = new Bundle();
-        args.putLong("ID", id);
+        args.putLong(ArgumentKeys.ID, id);
         router.putCommand(Command.SHOW_INGREDIENTS, IngredientsPresenter.class.getName(), args);
     }
 
     public void onStepClick(int position){
         Bundle args = new Bundle();
-        args.putLong("ID", id);
-        args.putInt("STEP", position);
+        args.putLong(ArgumentKeys.ID, id);
+        args.putInt(ArgumentKeys.STEP, position);
         router.putCommand(Command.SHOW_STEP, StepPresenter.class.getName(), args);
     }
 

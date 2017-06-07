@@ -1,7 +1,6 @@
 package ru.chipenable.bakingapp.presentation.presenter;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -10,6 +9,7 @@ import javax.inject.Inject;
 
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.interactor.RecipeDetailsInteractor;
+import ru.chipenable.bakingapp.model.ArgumentKeys;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.presentation.view.IStepView;
 
@@ -36,9 +36,8 @@ public class StepPresenter extends MvpPresenter<IStepView> {
         super.onFirstViewAttach();
         Bundle args = router.getArguments(this.getClass().getName());
         if (args != null){
-            recipeId = args.getLong("ID");
-            stepNum = args.getInt("STEP");
-            Log.d(TAG, "id: " + Long.toString(recipeId) + " num: " + Integer.toString(stepNum));
+            recipeId = args.getLong(ArgumentKeys.ID);
+            stepNum = args.getInt(ArgumentKeys.STEP);
         }
     }
 
