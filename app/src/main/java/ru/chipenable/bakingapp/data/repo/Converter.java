@@ -41,8 +41,8 @@ public class Converter {
         ContentValues cv = new ContentValues();
         cv.put(IngredientEntry.COL_RECIPE_ID, recipeId);
         cv.put(IngredientEntry.COL_INGREDIENT, ingredient.ingredient());
-        cv.put(IngredientEntry.COL_MEASURE, ingredient.quantity());
-        cv.put(IngredientEntry.COL_QUANTITY, ingredient.measure());
+        cv.put(IngredientEntry.COL_MEASURE, ingredient.measure());
+        cv.put(IngredientEntry.COL_QUANTITY, ingredient.quantity());
         return cv;
     }
 

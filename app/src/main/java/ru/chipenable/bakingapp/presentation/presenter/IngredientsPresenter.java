@@ -43,7 +43,7 @@ public class IngredientsPresenter extends MvpPresenter<IIngredientsView> {
     public void attachView(IIngredientsView view) {
         super.attachView(view);
         recipeDetailsInteractor.getIngredients(recipeId)
-                .subscribe(ingredients -> Log.d(TAG, ingredients.toString()));
+                .subscribe(ingredients -> getViewState().showIngredients(ingredients));
     }
 
 }
