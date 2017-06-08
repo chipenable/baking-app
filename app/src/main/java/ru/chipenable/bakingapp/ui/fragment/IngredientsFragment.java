@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class IngredientsFragment extends MvpAppCompatFragment implements IIngred
 
     @InjectPresenter IngredientsPresenter presenter;
 
+    private final String TAG = getClass().getName();
     private IngredientAdapter ingredientAdapter;
 
     @ProvidePresenter
@@ -50,7 +52,7 @@ public class IngredientsFragment extends MvpAppCompatFragment implements IIngred
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG, "onCreate");
     }
 
     @Override
@@ -65,7 +67,11 @@ public class IngredientsFragment extends MvpAppCompatFragment implements IIngred
         return view;
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
 
     /** view interface methods */
 

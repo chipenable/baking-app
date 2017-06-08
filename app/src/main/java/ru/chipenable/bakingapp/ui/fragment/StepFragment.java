@@ -3,6 +3,7 @@ package ru.chipenable.bakingapp.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,9 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     @BindView(R.id.player_view) SimpleExoPlayerView playerView;
     @BindView(R.id.step_description)  TextView stepDescriptionView;
 
+    private final String TAG = getClass().getName();
+    private IVideoPlayer videoPlayer;
+
     @ProvidePresenter
     StepPresenter providePresenter(){
         AppComponent component = ((BakingApp)getActivity().getApplication()).getAppComponent();
@@ -55,8 +59,16 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        videoPlayer.release();
+        videoPlayer = null;
+        Log.d(TAG, "onDestroy");
+    }
+
+    @Override
     public void showStep(Step step) {
-        IVideoPlayer videoPlayer = ExoPlayer.getInstance(getContext(), playerView,
+        videoPlayer = ExoPlayer.getInstance(getContext(), playerView,
                 step.videoURL(), step.thumbnailURL());
         stepDescriptionView.setText(step.description());
     }

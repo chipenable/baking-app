@@ -12,5 +12,5 @@ public interface IVideoPlayer {
 
     void restoreState(Bundle bundle);
 
-
+    void release();
 }

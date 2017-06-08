@@ -32,6 +32,7 @@ import ru.chipenable.bakingapp.R;
 public class ExoPlayer implements IVideoPlayer {
 
     private final String TAG = getClass().getName();
+    private final String POSITION_KEY = "player_position";
     private SimpleExoPlayer player;
 
     public static IVideoPlayer getInstance(Context context, SimpleExoPlayerView playerView,
@@ -76,12 +77,24 @@ public class ExoPlayer implements IVideoPlayer {
 
     @Override
     public void saveState(Bundle bundle) {
-
+        if (player != null) {
+            long position = player.getCurrentPosition();
+            bundle.putLong(POSITION_KEY, position);
+        }
     }
 
     @Override
     public void restoreState(Bundle bundle) {
-
+        if (player != null && bundle != null){
+            long position = bundle.getLong(POSITION_KEY);
+            player.seekTo(position);
+        }
     }
 
+    @Override
+    public void release() {
+        if (player != null){
+            player.release();
+        }
+    }
 }
