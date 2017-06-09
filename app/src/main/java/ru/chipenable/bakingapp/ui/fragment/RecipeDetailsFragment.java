@@ -1,6 +1,7 @@
 package ru.chipenable.bakingapp.ui.fragment;
 
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,6 +63,7 @@ public class RecipeDetailsFragment extends MvpAppCompatFragment implements IReci
 
     @Override
     public void showDetails(Recipe recipe) {
+        getActivity().setTitle(recipe.name());
         stepAdapter.setData(recipe);
     }
 }

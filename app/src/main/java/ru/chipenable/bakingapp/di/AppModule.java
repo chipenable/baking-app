@@ -16,6 +16,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.chipenable.bakingapp.data.network.AutoValueGsonFactory;
 import ru.chipenable.bakingapp.data.network.HttpClient;
+import ru.chipenable.bakingapp.helper.time.TimeController;
 import ru.chipenable.bakingapp.data.repo.Converter;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.data.repo.Repo;
@@ -90,18 +91,23 @@ public class AppModule {
 
     @Singleton
     @Provides
-    public RecipeInteractor provideRecipeInteractor(IRepo repo, HttpClient client,
-                                                    @IoScheduler Scheduler ioScheduler,
-                                                    @UiScheduler Scheduler uiScheduler){
-        return new RecipeInteractor(repo, client, ioScheduler, uiScheduler);
+    public RecipeInteractor provideRecipeInteractor(IRepo repo, HttpClient client, TimeController timeController,
+                            @IoScheduler Scheduler ioScheduler, @UiScheduler Scheduler uiScheduler){
+        return new RecipeInteractor(repo, client, timeController, ioScheduler, uiScheduler);
     }
 
     @Singleton
     @Provides
     public RecipeDetailsInteractor provideRecipeDetailsInteractor(IRepo repo,
-                                                                  @IoScheduler Scheduler ioScheduler,
-                                                                  @UiScheduler Scheduler uiScheduler){
+                            @IoScheduler Scheduler ioScheduler, @UiScheduler Scheduler uiScheduler){
         return new RecipeDetailsInteractor(repo, ioScheduler, uiScheduler);
     }
+
+    @Singleton
+    @Provides
+    TimeController provideTimeController(@ApplicationContext Context context){
+        return new TimeController(context);
+    }
+
 
 }

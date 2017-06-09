@@ -77,12 +77,18 @@ public class Repo implements IRepo {
     public Observable<Recipe> getRecipe(long id) {
         return Observable.fromCallable(() -> {
             SQLiteDatabase db = repoHelper.getReadableDatabase();
-            String selection = RepoContract.StepEntry.COL_RECIPE_ID + " =? ";
+
+            String selection = RepoContract.RecipeEntry._ID + " =? ";
             String[] selArgs = {Long.toString(id)};
-            Cursor cursor = db.query(RepoContract.StepEntry.TABLE_NAME, null, selection, selArgs,
+            Cursor recipeCursor = db.query(RepoContract.RecipeEntry.TABLE_NAME, null, selection, selArgs,
                     null, null, null);
-            Recipe recipe = converter.toRecipe(cursor);
-            cursor.close();
+
+            selection = RepoContract.StepEntry.COL_RECIPE_ID + " =? ";
+            Cursor stepCursor = db.query(RepoContract.StepEntry.TABLE_NAME, null, selection, selArgs,
+                    null, null, null);
+            Recipe recipe = converter.toRecipe(recipeCursor, stepCursor);
+            recipeCursor.close();
+            stepCursor.close();
             return recipe;
         });
     }

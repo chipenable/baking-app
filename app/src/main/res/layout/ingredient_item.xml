@@ -4,7 +4,8 @@
     android:layout_marginStart="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginEnd="8dp"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     android:background="@drawable/recycler_item_1"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -13,10 +14,11 @@
 
     <TextView
         android:id="@+id/ingredient"
+        android:lines="3"
         android:padding="8dp"
         android:textSize="16sp"
         android:layout_width="0dp"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:layout_height="wrap_content"/>
 
     <TextView

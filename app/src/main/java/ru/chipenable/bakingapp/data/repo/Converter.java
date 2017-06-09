@@ -68,15 +68,22 @@ public class Converter {
         return list;
     }
 
-    public Recipe toRecipe(Cursor cursor){
+    public Recipe toRecipe(Cursor recipeCursor, Cursor stepCursor){
         List<Step> stepList = new ArrayList<>();
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
+
+        String recipeName = "";
+        if (recipeCursor.getCount() > 0){
+            recipeCursor.moveToFirst();
+            recipeName = getString(recipeCursor, RecipeEntry.COL_NAME);
+        }
+
+        if (stepCursor.getCount() > 0) {
+            stepCursor.moveToFirst();
             do {
-                String description = getString(cursor, StepEntry.COL_DESCRIPTION);
-                String shortDescription = getString(cursor, StepEntry.COL_SHORT_DESCRIPTION);
-                String videoUrl = getString(cursor, StepEntry.COL_VIDEO_URL);
-                String thumbnailUrl = getString(cursor, StepEntry.COL_THUMBNAIL_URL);
+                String description = getString(stepCursor, StepEntry.COL_DESCRIPTION);
+                String shortDescription = getString(stepCursor, StepEntry.COL_SHORT_DESCRIPTION);
+                String videoUrl = getString(stepCursor, StepEntry.COL_VIDEO_URL);
+                String thumbnailUrl = getString(stepCursor, StepEntry.COL_THUMBNAIL_URL);
                 Step step = Step.builder()
                         .setId(0)
                         .setShortDescription(shortDescription)
@@ -85,12 +92,12 @@ public class Converter {
                         .setThumbnailURL(thumbnailUrl)
                         .build();
                 stepList.add(step);
-            } while (cursor.moveToNext());
+            } while (stepCursor.moveToNext());
         }
 
         return Recipe.builder()
                 .setId(0)
-                .setName("")
+                .setName(recipeName)
                 .setSteps(stepList)
                 .setIngredients(new ArrayList<>())
                 .setServings(0)
