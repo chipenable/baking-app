@@ -31,4 +31,9 @@ ext{
     rxjava2Version = '2.1.0'
     rxandroidVersion = '2.0.1'
     retrofitVersion = '2.2.0'
+    exoplayerVersion = 'r2.2.0'
+    autoValueVersion = '1.2'
+    autoValueGsonVersion = '0.4.5'
+    espressoVersion = '2.2.2'
+
 }

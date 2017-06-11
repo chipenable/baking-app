@@ -3,7 +3,6 @@ package ru.chipenable.bakingapp.helper.time;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import io.reactivex.Observable;
 
@@ -25,7 +24,6 @@ public class TimeController {
 
     public Observable<Boolean> isItTimeToUpdate(){
         return Observable.just(pref.getLong(UPDATE_DATE, 0))
-                //.doOnNext(date -> Log.d(TAG, "Time: " + Long.toString(getCurDate() - date)))
                 .map(date -> getCurDate() - date > UPDATE_INTERVAL_S);
     }
 
