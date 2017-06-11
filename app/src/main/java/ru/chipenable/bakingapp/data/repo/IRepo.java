@@ -16,7 +16,7 @@ public interface IRepo {
 
     Observable<Long> putRecipes(List<Recipe> recipeList);
 
-    Observable<List<Recipe>> getRecipes();
+    Observable<List<Recipe>> getRecipeNames();
 
     Observable<Recipe> getRecipe(long id);
 

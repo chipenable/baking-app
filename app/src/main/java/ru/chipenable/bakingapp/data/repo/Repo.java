@@ -36,10 +36,10 @@ public class Repo implements IRepo {
     }
 
     @Override
-    public Observable<List<Recipe>> getRecipes() {
+    public Observable<List<Recipe>> getRecipeNames() {
         return Observable.concat(Observable.just(RepoEvent.SUBSCRIBE), publishSubject)
                 .doOnNext(repoEvent -> Log.d(TAG, "event: " + repoEvent.toString()))
-                .concatMap(repoEvent -> getAllRecipes());
+                .concatMap(repoEvent -> getAllRecipeNames());
     }
 
     @Override
@@ -124,12 +124,12 @@ public class Repo implements IRepo {
 
     /** helper methods */
 
-    private Observable<List<Recipe>> getAllRecipes() {
+    private Observable<List<Recipe>> getAllRecipeNames() {
         return Observable.fromCallable(() -> {
             SQLiteDatabase db = repoHelper.getReadableDatabase();
             Cursor cursor = db.query(RepoContract.RecipeEntry.TABLE_NAME, null, null, null,
                     null, null, null);
-            List<Recipe> list = converter.toRecipeList(cursor);
+            List<Recipe> list = converter.toRecipeNameList(cursor);
             cursor.close();
             return list;
         });

@@ -46,7 +46,7 @@ public class Converter {
         return cv;
     }
 
-    public List<Recipe> toRecipeList(Cursor cursor){
+    public List<Recipe> toRecipeNameList(Cursor cursor){
         List<Recipe> list = new ArrayList<>();
         if (cursor.getCount() > 0){
             cursor.moveToFirst();
@@ -72,9 +72,11 @@ public class Converter {
         List<Step> stepList = new ArrayList<>();
 
         String recipeName = "";
+        int recipeServings = 0;
         if (recipeCursor.getCount() > 0){
             recipeCursor.moveToFirst();
             recipeName = getString(recipeCursor, RecipeEntry.COL_NAME);
+            recipeServings = getInt(recipeCursor, RecipeEntry.COL_SERVINGS);
         }
 
         if (stepCursor.getCount() > 0) {
@@ -100,7 +102,7 @@ public class Converter {
                 .setName(recipeName)
                 .setSteps(stepList)
                 .setIngredients(new ArrayList<>())
-                .setServings(0)
+                .setServings(recipeServings)
                 .setImageUrl("")
                 .build();
     }

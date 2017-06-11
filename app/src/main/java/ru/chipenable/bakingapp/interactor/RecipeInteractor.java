@@ -43,7 +43,7 @@ public class RecipeInteractor {
     }
 
     public Observable<List<Recipe>> subscribeToRecipes(){
-        return repo.getRecipes()
+        return repo.getRecipeNames()
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler);
     }
