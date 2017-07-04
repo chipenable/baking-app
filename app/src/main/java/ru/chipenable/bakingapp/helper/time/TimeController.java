@@ -34,7 +34,7 @@ public class TimeController {
     }
 
     private long getCurDate() {
-        long curTime =  System.currentTimeMillis();
+        long curTime = System.currentTimeMillis();
         return curTime == 0? 0:curTime/1000;
     }
 

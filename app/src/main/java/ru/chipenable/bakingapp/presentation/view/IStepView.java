@@ -15,4 +15,7 @@ public interface IStepView extends MvpView {
     @StateStrategyType(OneExecutionStateStrategy.class)
     void showStep(Step step);
 
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void releaseResources();
+
 }

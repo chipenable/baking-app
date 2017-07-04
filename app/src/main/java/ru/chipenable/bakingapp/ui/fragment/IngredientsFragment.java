@@ -66,7 +66,6 @@ public class IngredientsFragment extends MvpAppCompatFragment implements IIngred
         if (args != null){
             recipeId = args.getLong(RECIPE_ID_KEY);
         }
-        Log.d(TAG, "onCreate");
     }
 
     @Override
@@ -87,16 +86,11 @@ public class IngredientsFragment extends MvpAppCompatFragment implements IIngred
         return view;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
-    }
-
     /** view interface methods */
 
     @Override
     public void showIngredients(List<Ingredient> list) {
         ingredientAdapter.setData(list);
     }
+
 }

@@ -79,13 +79,21 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        presenter.start();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.stop();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        if (videoPlayer != null) {
-            videoPlayer.release();
-            videoPlayer = null;
-        }
-        Log.d(TAG, "onDestroy");
+        releaseResources();
     }
 
     @Override
@@ -93,5 +101,13 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
         videoPlayer = ExoPlayer.getInstance(getContext(), playerView,
                 step.videoURL(), step.thumbnailURL());
         stepDescriptionView.setText(step.description());
+    }
+
+    @Override
+    public void releaseResources(){
+        if (videoPlayer != null) {
+            videoPlayer.release();
+            videoPlayer = null;
+        }
     }
 }

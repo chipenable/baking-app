@@ -90,8 +90,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements INavigat
             replaceFragment(R.id.detail_container, new IngredientsFragment(), false);
         }
         else{
-            /*Intent intent = new Intent(this, IngredientActivity.class);
-            startActivity(intent);*/
             Intent intent = new Intent(this, IngredientAndStepsActivity.class);
             startActivity(intent);
         }
@@ -102,8 +100,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements INavigat
             replaceFragment(R.id.detail_container, new StepFragment(), false);
         }
         else{
-            /*Intent intent = new Intent(this, StepActivity.class);
-            startActivity(intent);*/
             Intent intent = new Intent(this, IngredientAndStepsActivity.class);
             startActivity(intent);
         }
