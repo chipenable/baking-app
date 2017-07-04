@@ -1,26 +1,29 @@
 package ru.chipenable.bakingapp.ui.activity;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
-import ru.chipenable.bakingapp.model.data.Ingredient;
 import ru.chipenable.bakingapp.model.util.ActivityUtil;
 import ru.chipenable.bakingapp.presentation.presenter.IngredientAndStepsPresenter;
 import ru.chipenable.bakingapp.presentation.view.IIngredientAndStepsView;
 import ru.chipenable.bakingapp.ui.fragment.IngredientsFragment;
 import ru.chipenable.bakingapp.ui.fragment.StepFragment;
-import ru.chipenable.bakingapp.ui.other.RecipePagerAdapter;
 
 public class IngredientAndStepsActivity extends MvpAppCompatActivity implements IIngredientAndStepsView {
+
+    @BindView(R.id.prev_but) Button prevBut;
+    @BindView(R.id.next_but) Button nextBut;
 
     @InjectPresenter
     IngredientAndStepsPresenter presenter;
@@ -35,6 +38,9 @@ public class IngredientAndStepsActivity extends MvpAppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_and_step);
         ActivityUtil.setDisplayHomeAsUpEnabled(this);
+        ButterKnife.bind(this);
+        prevBut.setOnClickListener(v -> presenter.toPreviousPart());
+        nextBut.setOnClickListener(v -> presenter.toNextPart());
     }
 
     @Override
@@ -48,18 +54,26 @@ public class IngredientAndStepsActivity extends MvpAppCompatActivity implements 
     }
 
     @Override
-    public void showData(long recipeId, int count, int position) {
+    public void showData(long recipeId, int position) {
         FragmentManager fm = getSupportFragmentManager();
-        Fragment f;
+        Fragment newFragment;
+
         if (position == 0) {
-            f = IngredientsFragment.newInstance(recipeId);
+            newFragment = IngredientsFragment.newInstance(recipeId);
         }
         else {
-            f = StepFragment.newInstance(recipeId, position - 1);
+            newFragment = StepFragment.newInstance(recipeId, position - 1);
         }
+
         fm.beginTransaction()
-                .add(R.id.fragment_container, f)
+                .replace(R.id.fragment_container, newFragment)
                 .commit();
+    }
+
+    @Override
+    public void enableNavigation(boolean enablePrevBut, boolean enableNextBut) {
+        prevBut.setEnabled(enablePrevBut);
+        nextBut.setEnabled(enableNextBut);
     }
 
 }

@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.di.AppComponent;
@@ -110,4 +111,5 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
             videoPlayer = null;
         }
     }
+
 }

@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.interactor.RecipeDetailsInteractor;
 import ru.chipenable.bakingapp.model.ArgumentKeys;
+import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.presentation.view.IIngredientAndStepsView;
 
@@ -23,6 +24,10 @@ public class IngredientAndStepsPresenter extends MvpPresenter<IIngredientAndStep
     @Inject Router router;
     @Inject RecipeDetailsInteractor recipeDetailsInteractor;
 
+    private long recipeId;
+    private int position;
+    private int count;
+
     public IngredientAndStepsPresenter(AppComponent component){
         component.inject(this);
     }
@@ -32,17 +37,41 @@ public class IngredientAndStepsPresenter extends MvpPresenter<IIngredientAndStep
         super.attachView(view);
         Bundle args = router.getArguments(this.getClass().getName());
         if (args != null){
-            final long recipeId = args.getLong(ArgumentKeys.ID);
-            final int position = args.getInt(ArgumentKeys.STEP);
+            recipeId = args.getLong(ArgumentKeys.ID);
+            position = args.getInt(ArgumentKeys.STEP);
             recipeDetailsInteractor.getRecipe(recipeId)
                     .subscribe(
                             recipe -> {
-                                int count = recipe.steps().size() + 1;
-                                getViewState().showData(recipeId, count, position);
+                                count = recipe.steps().size();
+                                getViewState().showData(recipeId, position);
+                                enableNavigation(0, position, count);
                             },
                             throwable -> {},
                             () -> {}
                     );
         }
     }
+
+    public void toPreviousPart(){
+        if (position > 0){
+            position--;
+            getViewState().showData(recipeId, position);
+        }
+
+        enableNavigation(0, position, count);
+    }
+
+    public void toNextPart(){
+        if (position < count) {
+            position++;
+            getViewState().showData(recipeId, position);
+        }
+
+        enableNavigation(0, position, count);
+    }
+
+    private void enableNavigation(int min, int position, int max){
+        getViewState().enableNavigation(position > min, position < max);
+    }
+
 }
