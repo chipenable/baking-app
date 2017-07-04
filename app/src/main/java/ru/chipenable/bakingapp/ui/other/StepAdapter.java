@@ -26,38 +26,26 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
     private static final int STEP_VIEW_TYPE = 1;
 
     private List<Step> stepList;
-    private List<Ingredient> ingredientList;
-    private IOnIngredientsClickListener ingredientsClickListener;
-    private IOnStepsClickListener stepsClickListener;
+    private IOnItemClickListener listener;
 
-    public interface IOnIngredientsClickListener{
-        void onIngredientsClick();
+    public interface IOnItemClickListener{
+        void onItemClick(int position);
     }
 
-    public interface IOnStepsClickListener{
-        void onStepClick(int position);
-    }
-
-    public void setIngredientsClickListener(IOnIngredientsClickListener listener){
-        ingredientsClickListener = listener;
-    }
-
-    public void setStepsClickListener(IOnStepsClickListener listener){
-        stepsClickListener = listener;
+    public void setOnItemClickListener(IOnItemClickListener listener){
+        this.listener = listener;
     }
 
     public StepAdapter(){
-        this(new ArrayList<>(), new ArrayList<>());
+        this(new ArrayList<>());
     }
 
-    public StepAdapter(List<Ingredient> ingredientList, List<Step> stepList){
-        this.ingredientList = ingredientList;
+    public StepAdapter(List<Step> stepList){
         this.stepList = stepList;
     }
 
     public void setData(Recipe recipe){
         stepList = recipe.steps();
-        ingredientList = recipe.ingredients();
         notifyDataSetChanged();
     }
 
@@ -111,16 +99,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            switch(getItemViewType()){
-                case INGREDIENT_VIEW_TYPE:
-                    if (ingredientsClickListener != null){
-                        ingredientsClickListener.onIngredientsClick();
-                    }
-                    break;
-                case STEP_VIEW_TYPE:
-                    if (stepsClickListener != null){
-                        stepsClickListener.onStepClick(getAdapterPosition() - 1);
-                    }
+            if (listener != null){
+                listener.onItemClick(getAdapterPosition());
             }
         }
     }

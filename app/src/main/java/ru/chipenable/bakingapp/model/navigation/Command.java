@@ -8,6 +8,7 @@ public enum Command {
 
     SHOW_DETAILS,
     SHOW_INGREDIENTS,
-    SHOW_STEP
+    SHOW_STEP,
+    SHOW_INGREDIENTS_OR_STEP
 
 }

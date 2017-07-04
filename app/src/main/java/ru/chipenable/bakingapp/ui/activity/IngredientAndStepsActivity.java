@@ -1,5 +1,6 @@
 package ru.chipenable.bakingapp.ui.activity;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -11,17 +12,18 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
+import ru.chipenable.bakingapp.model.data.Ingredient;
 import ru.chipenable.bakingapp.model.util.ActivityUtil;
 import ru.chipenable.bakingapp.presentation.presenter.IngredientAndStepsPresenter;
 import ru.chipenable.bakingapp.presentation.view.IIngredientAndStepsView;
+import ru.chipenable.bakingapp.ui.fragment.IngredientsFragment;
+import ru.chipenable.bakingapp.ui.fragment.StepFragment;
 import ru.chipenable.bakingapp.ui.other.RecipePagerAdapter;
 
 public class IngredientAndStepsActivity extends MvpAppCompatActivity implements IIngredientAndStepsView {
 
     @InjectPresenter
     IngredientAndStepsPresenter presenter;
-
-    private ViewPager viewPager;
 
     @ProvidePresenter
     IngredientAndStepsPresenter providePresenter(){
@@ -31,9 +33,7 @@ public class IngredientAndStepsActivity extends MvpAppCompatActivity implements 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewPager = new ViewPager(this);
-        viewPager.setId(R.id.view_pager);
-        setContentView(viewPager);
+        setContentView(R.layout.activity_ingredient_and_step);
         ActivityUtil.setDisplayHomeAsUpEnabled(this);
     }
 
@@ -50,8 +50,16 @@ public class IngredientAndStepsActivity extends MvpAppCompatActivity implements 
     @Override
     public void showData(long recipeId, int count, int position) {
         FragmentManager fm = getSupportFragmentManager();
-        RecipePagerAdapter recipePagerAdapter = new RecipePagerAdapter(fm, recipeId, count);
-        viewPager.setAdapter(recipePagerAdapter);
-        viewPager.setCurrentItem(position);
+        Fragment f;
+        if (position == 0) {
+            f = IngredientsFragment.newInstance(recipeId);
+        }
+        else {
+            f = StepFragment.newInstance(recipeId, position - 1);
+        }
+        fm.beginTransaction()
+                .add(R.id.fragment_container, f)
+                .commit();
     }
+
 }

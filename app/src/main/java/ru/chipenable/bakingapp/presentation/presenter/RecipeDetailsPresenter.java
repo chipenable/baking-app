@@ -52,18 +52,12 @@ public class RecipeDetailsPresenter extends MvpPresenter<IRecipeDetailsView> {
         disposable.dispose();
     }
 
-    public void onIngredientsClick(){
-        Bundle args = new Bundle();
-        args.putLong(ArgumentKeys.ID, id);
-        args.putInt(ArgumentKeys.STEP, 0);
-        router.putCommand(Command.SHOW_INGREDIENTS, IngredientAndStepsPresenter.class.getName(), args);
-    }
-
-    public void onStepClick(int position){
+    public void onItemClick(int position){
         Bundle args = new Bundle();
         args.putLong(ArgumentKeys.ID, id);
         args.putInt(ArgumentKeys.STEP, position);
-        router.putCommand(Command.SHOW_STEP, IngredientAndStepsPresenter.class.getName(), args);
+        Command command = position == 0? Command.SHOW_INGREDIENTS : Command.SHOW_STEP;
+        router.putCommand(command, IngredientAndStepsPresenter.class.getName(), args);
     }
 
 }
