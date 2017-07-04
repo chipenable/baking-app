@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.interactor.RecipeDetailsInteractor;
 import ru.chipenable.bakingapp.model.ArgumentKeys;
+import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.presentation.view.IStepView;
 
@@ -50,5 +51,11 @@ public class StepPresenter extends MvpPresenter<IStepView> {
                 );
     }
 
+    public void toPreviousPart(){
+        //router.putCommand();
+    }
 
+    public void toNextPart(){
+        router.putCommand(Command.SHOW_DETAILS, null, null);
+    }
 }

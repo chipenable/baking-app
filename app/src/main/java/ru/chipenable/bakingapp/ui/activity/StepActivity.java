@@ -5,9 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import ru.chipenable.bakingapp.R;
+import ru.chipenable.bakingapp.model.navigation.Command;
+import ru.chipenable.bakingapp.model.navigation.INavigator;
 import ru.chipenable.bakingapp.model.util.ActivityUtil;
 
-public class StepActivity extends AppCompatActivity {
+public class StepActivity extends AppCompatActivity  implements INavigator {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +26,10 @@ public class StepActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void handleCommand(Command command) {
+        switch()
     }
 }
