@@ -36,8 +36,18 @@ public class IngredientsFragment extends MvpAppCompatFragment implements IIngred
 
     @InjectPresenter IngredientsPresenter presenter;
 
-    private final String TAG = getClass().getName();
+    private long recipeId;
     private IngredientAdapter ingredientAdapter;
+    private final String TAG = getClass().getName();
+    private final static String RECIPE_ID_KEY = "recipe_id";
+
+    public static IngredientsFragment newInstance(long recipeId){
+        Bundle args = new Bundle();
+        args.putLong(RECIPE_ID_KEY, recipeId);
+        IngredientsFragment f = new IngredientsFragment();
+        f.setArguments(args);
+        return f;
+    }
 
     @ProvidePresenter
     IngredientsPresenter providePresenter(){
@@ -52,7 +62,17 @@ public class IngredientsFragment extends MvpAppCompatFragment implements IIngred
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null){
+            recipeId = args.getLong(RECIPE_ID_KEY);
+        }
         Log.d(TAG, "onCreate");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.start(recipeId);
     }
 
     @Override

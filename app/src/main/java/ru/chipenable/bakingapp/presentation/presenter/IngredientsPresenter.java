@@ -33,15 +33,20 @@ public class IngredientsPresenter extends MvpPresenter<IIngredientsView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        Bundle args = router.getArguments(this.getClass().getName());
+        /*Bundle args = router.getArguments(this.getClass().getName());
         if (args != null){
             recipeId = args.getLong(ArgumentKeys.ID);
-        }
+        }*/
     }
 
     @Override
     public void attachView(IIngredientsView view) {
         super.attachView(view);
+        /*recipeDetailsInteractor.getIngredients(recipeId)
+                .subscribe(ingredients -> getViewState().showIngredients(ingredients));*/
+    }
+
+    public void start(long recipeId){
         recipeDetailsInteractor.getIngredients(recipeId)
                 .subscribe(ingredients -> getViewState().showIngredients(ingredients));
     }

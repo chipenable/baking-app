@@ -3,6 +3,7 @@ package ru.chipenable.bakingapp.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import ru.chipenable.bakingapp.presentation.presenter.IngredientAndStepsPresenter;
 import ru.chipenable.bakingapp.presentation.presenter.IngredientsPresenter;
 import ru.chipenable.bakingapp.presentation.presenter.RecipeDetailsPresenter;
 import ru.chipenable.bakingapp.presentation.presenter.RecipePresenter;
@@ -30,5 +31,6 @@ public interface AppComponent {
     void inject(IngredientsPresenter obj);
     void inject(StepPresenter obj);
     void inject(StepFragment obj);
+    void inject(IngredientAndStepsPresenter obj);
 
 }

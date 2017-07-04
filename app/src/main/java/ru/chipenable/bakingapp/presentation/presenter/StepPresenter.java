@@ -31,14 +31,19 @@ public class StepPresenter extends MvpPresenter<IStepView> {
         component.inject(this);
     }
 
-    @Override
+    /*@Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        Bundle args = router.getArguments(this.getClass().getName());
+        Bundle args = router.removeArguments(this.getClass().getName());
         if (args != null){
             recipeId = args.getLong(ArgumentKeys.ID);
             stepNum = args.getInt(ArgumentKeys.STEP);
         }
+    }*/
+
+    public void init(long recipeId, int stepNum){
+        this.recipeId = recipeId;
+        this.stepNum = stepNum;
     }
 
     @Override

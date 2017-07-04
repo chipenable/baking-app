@@ -31,13 +31,24 @@ import ru.chipenable.bakingapp.presentation.view.IStepView;
 public class StepFragment extends MvpAppCompatFragment implements IStepView {
 
     @InjectPresenter
-    StepPresenter stepPresenter;
+    StepPresenter presenter;
 
     @BindView(R.id.player_view) SimpleExoPlayerView playerView;
     @BindView(R.id.step_description)  TextView stepDescriptionView;
 
-    private final String TAG = getClass().getName();
     private IVideoPlayer videoPlayer;
+    private final String TAG = getClass().getName();
+    private static final String RECIPE_ID_KEY = "recipe_id";
+    private static final String STEP_NUM_KEY = "step_num";
+
+    public static StepFragment newInstance(long recipeId, int step){
+        Bundle args = new Bundle();
+        args.putLong(RECIPE_ID_KEY, recipeId);
+        args.putInt(STEP_NUM_KEY, step);
+        StepFragment f = new StepFragment();
+        f.setArguments(args);
+        return f;
+    }
 
     @ProvidePresenter
     StepPresenter providePresenter(){
@@ -47,6 +58,15 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
 
     public StepFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null && savedInstanceState == null){
+            presenter.init(args.getLong(RECIPE_ID_KEY), args.getInt(STEP_NUM_KEY));
+        }
     }
 
     @Override
@@ -61,8 +81,10 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        videoPlayer.release();
-        videoPlayer = null;
+        if (videoPlayer != null) {
+            videoPlayer.release();
+            videoPlayer = null;
+        }
         Log.d(TAG, "onDestroy");
     }
 

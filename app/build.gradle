@@ -62,4 +62,5 @@ dependencies {
     annotationProcessor 'com.ryanharter.auto.value:auto-value-gson:0.4.5'*/
     provided "com.google.auto.value:auto-value:$rootProject.ext.autoValueVersion"
     provided "com.ryanharter.auto.value:auto-value-gson:$rootProject.ext.autoValueGsonVersion"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

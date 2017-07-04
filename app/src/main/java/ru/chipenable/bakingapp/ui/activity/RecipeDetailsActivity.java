@@ -24,6 +24,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements INavigat
 
     @Inject Router router;
 
+    private final String TAG = getClass().getName();
     private boolean isTablet;
 
     @Override
@@ -89,7 +90,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements INavigat
             replaceFragment(R.id.detail_container, new IngredientsFragment(), false);
         }
         else{
-            Intent intent = new Intent(this, IngredientActivity.class);
+            /*Intent intent = new Intent(this, IngredientActivity.class);
+            startActivity(intent);*/
+            Intent intent = new Intent(this, IngredientAndStepsActivity.class);
             startActivity(intent);
         }
     }
@@ -99,7 +102,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements INavigat
             replaceFragment(R.id.detail_container, new StepFragment(), false);
         }
         else{
-            Intent intent = new Intent(this, StepActivity.class);
+            /*Intent intent = new Intent(this, StepActivity.class);
+            startActivity(intent);*/
+            Intent intent = new Intent(this, IngredientAndStepsActivity.class);
             startActivity(intent);
         }
     }
