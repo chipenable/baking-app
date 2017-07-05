@@ -30,7 +30,7 @@ import ru.chipenable.bakingapp.ui.other.RecipeAdapter;
  * Created by Pavel.B on 12.05.2017.
  */
 
-public class RecipeFragment extends MvpAppCompatFragment implements IRecipeView {
+public class RecipeListFragment extends MvpAppCompatFragment implements IRecipeView {
 
     @BindView(R.id.recipe_list) RecyclerView recipeRecyclerView;
     @BindView(R.id.progress_bar) ProgressBar progressBar;

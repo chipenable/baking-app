@@ -33,23 +33,28 @@ public class IngredientAndStepsPresenter extends MvpPresenter<IIngredientAndStep
     }
 
     @Override
-    public void attachView(IIngredientAndStepsView view) {
-        super.attachView(view);
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
         Bundle args = router.getArguments(this.getClass().getName());
         if (args != null){
             recipeId = args.getLong(ArgumentKeys.ID);
             position = args.getInt(ArgumentKeys.STEP);
-            recipeDetailsInteractor.getRecipe(recipeId)
-                    .subscribe(
-                            recipe -> {
-                                count = recipe.steps().size();
-                                getViewState().showData(recipeId, position);
-                                enableNavigation(0, position, count);
-                            },
-                            throwable -> {},
-                            () -> {}
-                    );
         }
+    }
+
+    @Override
+    public void attachView(IIngredientAndStepsView view) {
+        super.attachView(view);
+        recipeDetailsInteractor.getRecipe(recipeId)
+                .subscribe(
+                        recipe -> {
+                            count = recipe.steps().size();
+                            getViewState().showData(recipeId, position);
+                            enableNavigation(0, position, count);
+                        },
+                        throwable -> {},
+                        () -> {}
+                );
     }
 
     public void toPreviousPart(){
