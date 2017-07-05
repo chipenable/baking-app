@@ -22,7 +22,7 @@ import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.model.data.Recipe;
-import ru.chipenable.bakingapp.presentation.presenter.RecipePresenter;
+import ru.chipenable.bakingapp.presentation.presenter.RecipeListPresenter;
 import ru.chipenable.bakingapp.presentation.view.IRecipeView;
 import ru.chipenable.bakingapp.ui.other.RecipeAdapter;
 
@@ -36,14 +36,15 @@ public class RecipeListFragment extends MvpAppCompatFragment implements IRecipeV
     @BindView(R.id.progress_bar) ProgressBar progressBar;
     @BindView(R.id.shield) FrameLayout shield;
 
-    @InjectPresenter RecipePresenter presenter;
+    @InjectPresenter
+    RecipeListPresenter presenter;
 
     private RecipeAdapter recipeAdapter;
 
     @ProvidePresenter
-    RecipePresenter providePresenter(){
+    RecipeListPresenter providePresenter(){
         AppComponent component = ((BakingApp)getActivity().getApplication()).getAppComponent();
-        return new RecipePresenter(component);
+        return new RecipeListPresenter(component);
     }
 
     @Nullable
@@ -55,7 +56,6 @@ public class RecipeListFragment extends MvpAppCompatFragment implements IRecipeV
         recipeAdapter.setItemClickListener(position -> presenter.showDetails(position));
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recipeRecyclerView.setAdapter(recipeAdapter);
-
         return view;
     }
 

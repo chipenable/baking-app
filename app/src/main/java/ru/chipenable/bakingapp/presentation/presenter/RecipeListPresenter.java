@@ -23,7 +23,7 @@ import ru.chipenable.bakingapp.presentation.view.IRecipeView;
  * Created by Pavel.B on 12.05.2017.
  */
 @InjectViewState
-public class RecipePresenter extends MvpPresenter<IRecipeView> {
+public class RecipeListPresenter extends MvpPresenter<IRecipeView> {
 
     @Inject Router router;
     @Inject RecipeInteractor recipeInteractor;
@@ -32,7 +32,7 @@ public class RecipePresenter extends MvpPresenter<IRecipeView> {
     private List<Recipe> recipeList;
     private final String TAG = getClass().getName();
 
-    public RecipePresenter(AppComponent component){
+    public RecipeListPresenter(AppComponent component){
         component.inject(this);
     }
 

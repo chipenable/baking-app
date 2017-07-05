@@ -6,7 +6,7 @@ import dagger.Component;
 import ru.chipenable.bakingapp.presentation.presenter.IngredientAndStepsPresenter;
 import ru.chipenable.bakingapp.presentation.presenter.IngredientsPresenter;
 import ru.chipenable.bakingapp.presentation.presenter.RecipeDetailsPresenter;
-import ru.chipenable.bakingapp.presentation.presenter.RecipePresenter;
+import ru.chipenable.bakingapp.presentation.presenter.RecipeListPresenter;
 import ru.chipenable.bakingapp.presentation.presenter.StepPresenter;
 import ru.chipenable.bakingapp.ui.activity.RecipeDetailsActivity;
 import ru.chipenable.bakingapp.ui.activity.RecipeListActivity;
@@ -25,7 +25,7 @@ public interface AppComponent {
     void inject(RecipeListActivity obj);
     void inject(RecipeDetailsActivity obj);
     void inject(RecipeListFragment obj);
-    void inject(RecipePresenter obj);
+    void inject(RecipeListPresenter obj);
     void inject(RecipeDetailsFragment obj);
     void inject(RecipeDetailsPresenter obj);
     void inject(IngredientsPresenter obj);

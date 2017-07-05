@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.interactor.RecipeDetailsInteractor;
 import ru.chipenable.bakingapp.model.ArgumentKeys;
-import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.presentation.view.IIngredientAndStepsView;
 

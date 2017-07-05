@@ -12,10 +12,13 @@ import javax.inject.Inject;
 
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
+import ru.chipenable.bakingapp.model.ArgumentKeys;
 import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.INavigator;
 import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.model.util.ActivityUtil;
+import ru.chipenable.bakingapp.presentation.presenter.IngredientAndStepsPresenter;
+import ru.chipenable.bakingapp.presentation.presenter.RecipeDetailsPresenter;
 import ru.chipenable.bakingapp.ui.fragment.IngredientsFragment;
 import ru.chipenable.bakingapp.ui.fragment.RecipeDetailsFragment;
 import ru.chipenable.bakingapp.ui.fragment.StepFragment;
@@ -77,8 +80,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements INavigat
 
     private void showRecipeDetails(){
         if (isTablet){
+            Bundle args = router.getArguments(RecipeDetailsPresenter.class.getName());
+            long recipeId = args.getLong(ArgumentKeys.ID);
             replaceFragment(R.id.master_container, new RecipeDetailsFragment(), false);
-            replaceFragment(R.id.detail_container, new IngredientsFragment(), false);
+            replaceFragment(R.id.detail_container, IngredientsFragment.newInstance(recipeId), false);
         }
         else{
             replaceFragment(R.id.master_container, new RecipeDetailsFragment(), false);
@@ -87,7 +92,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements INavigat
 
     private void showIngredients(){
         if (isTablet){
-            replaceFragment(R.id.detail_container, new IngredientsFragment(), false);
+            Bundle args = router.getArguments(IngredientAndStepsPresenter.class.getName());
+            long recipeId = args.getLong(ArgumentKeys.ID);
+            replaceFragment(R.id.detail_container, IngredientsFragment.newInstance(recipeId), false);
         }
         else{
             Intent intent = new Intent(this, IngredientAndStepsActivity.class);
@@ -97,7 +104,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements INavigat
 
     private void showStep(){
         if (isTablet){
-            replaceFragment(R.id.detail_container, new StepFragment(), false);
+            Bundle args = router.getArguments(IngredientAndStepsPresenter.class.getName());
+            long recipeId = args.getLong(ArgumentKeys.ID);
+            int position = args.getInt(ArgumentKeys.STEP);
+            replaceFragment(R.id.detail_container, StepFragment.newInstance(recipeId, position - 1), false);
         }
         else{
             Intent intent = new Intent(this, IngredientAndStepsActivity.class);
