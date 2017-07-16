@@ -13,6 +13,7 @@ import ru.chipenable.bakingapp.ui.activity.RecipeListActivity;
 import ru.chipenable.bakingapp.ui.fragment.RecipeDetailsFragment;
 import ru.chipenable.bakingapp.ui.fragment.RecipeListFragment;
 import ru.chipenable.bakingapp.ui.fragment.StepFragment;
+import ru.chipenable.bakingapp.widget.RecipeWidgetService;
 
 /**
  * Created by Pavel.B on 20.05.2017.
@@ -32,5 +33,6 @@ public interface AppComponent {
     void inject(StepPresenter obj);
     void inject(StepFragment obj);
     void inject(IngredientAndStepsPresenter obj);
+    void inject(RecipeWidgetService obj);
 
 }

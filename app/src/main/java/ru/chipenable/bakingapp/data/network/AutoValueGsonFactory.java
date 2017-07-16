@@ -13,4 +13,5 @@ public abstract class AutoValueGsonFactory implements TypeAdapterFactory {
     public static TypeAdapterFactory create() {
         return new AutoValueGson_AutoValueGsonFactory();
     }
+    
 }
