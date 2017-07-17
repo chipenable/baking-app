@@ -1,9 +1,11 @@
 package ru.chipenable.bakingapp.ui.other;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -11,7 +13,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
+import ru.chipenable.bakingapp.helper.glide.GlideApp;
 import ru.chipenable.bakingapp.model.data.Recipe;
 
 /**
@@ -20,6 +24,7 @@ import ru.chipenable.bakingapp.model.data.Recipe;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
+    private Context context;
     private List<Recipe> items;
     private IOnItemClickListener itemClickListener;
 
@@ -31,11 +36,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         itemClickListener = listener;
     }
 
-    public RecipeAdapter(){
-        this(new ArrayList<>());
+    public RecipeAdapter(Context context){
+        this(context, new ArrayList<>());
     }
 
-    public RecipeAdapter(List<Recipe> items){
+    public RecipeAdapter(Context context, List<Recipe> items){
+        this.context = context;
         this.items = items;
     }
 
@@ -63,6 +69,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        @BindView(R.id.recipe_image) ImageView recipeImageView;
         @BindView(R.id.recipe_name) TextView recipeNameView;
 
         public ViewHolder(View view){
@@ -72,6 +79,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         }
 
         public void bind(Recipe recipe){
+            GlideApp.with(context)
+                    .load("sadf")
+                    .placeholder(R.drawable.ic_cake)
+                    .error(R.drawable.ic_cake)
+                    .into(recipeImageView);
+
             recipeNameView.setText(recipe.name());
         }
 

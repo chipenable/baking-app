@@ -3,6 +3,7 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
@@ -36,5 +37,6 @@ ext{
     autoValueGsonVersion = '0.4.5'
     autoValueParcelVersion = '0.2.5'
     espressoVersion = '2.2.2'
+    glideVersion = '4.0.0-RC1'
 
 }
