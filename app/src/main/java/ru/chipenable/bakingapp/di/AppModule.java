@@ -23,6 +23,7 @@ import ru.chipenable.bakingapp.data.repo.Repo;
 import ru.chipenable.bakingapp.data.repo.RepoHelper;
 import ru.chipenable.bakingapp.interactor.RecipeDetailsInteractor;
 import ru.chipenable.bakingapp.interactor.RecipeInteractor;
+import ru.chipenable.bakingapp.interactor.WidgetInteractor;
 import ru.chipenable.bakingapp.model.navigation.Router;
 
 
@@ -107,6 +108,12 @@ public class AppModule {
     @Provides
     TimeController provideTimeController(@ApplicationContext Context context){
         return new TimeController(context);
+    }
+
+    @Singleton
+    @Provides
+    WidgetInteractor provideWidgetInteractor(IRepo repo){
+        return new WidgetInteractor(repo);
     }
 
 }

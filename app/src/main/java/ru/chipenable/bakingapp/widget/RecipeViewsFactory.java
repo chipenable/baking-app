@@ -2,12 +2,20 @@ package ru.chipenable.bakingapp.widget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ru.chipenable.bakingapp.R;
+import ru.chipenable.bakingapp.di.AppComponent;
+import ru.chipenable.bakingapp.interactor.WidgetInteractor;
 import ru.chipenable.bakingapp.model.data.Ingredient;
 
 /**
@@ -16,16 +24,23 @@ import ru.chipenable.bakingapp.model.data.Ingredient;
 
 public class RecipeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
+
+    private final String TAG = getClass().getName();
+
     public Context context;
     private List<Ingredient> ingredientList;
 
-    public RecipeViewsFactory(Context context, Intent intent, List<Ingredient> ingredientList){
+    public RecipeViewsFactory(Context context, Intent intent){
         this.context = context;
-        this.ingredientList = ingredientList;
+        this.ingredientList = new ArrayList<>();
+        Bundle args = intent.getBundleExtra("args");
+        ingredientList = args.getParcelableArrayList("ingredients");
+        Log.d(TAG, ingredientList.toString());
     }
 
     @Override
     public void onCreate() {
+
 
     }
 

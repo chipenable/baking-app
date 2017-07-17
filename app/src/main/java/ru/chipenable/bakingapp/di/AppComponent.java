@@ -1,5 +1,7 @@
 package ru.chipenable.bakingapp.di;
 
+import android.appwidget.AppWidgetProvider;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -13,6 +15,8 @@ import ru.chipenable.bakingapp.ui.activity.RecipeListActivity;
 import ru.chipenable.bakingapp.ui.fragment.RecipeDetailsFragment;
 import ru.chipenable.bakingapp.ui.fragment.RecipeListFragment;
 import ru.chipenable.bakingapp.ui.fragment.StepFragment;
+import ru.chipenable.bakingapp.widget.RecipeViewsFactory;
+import ru.chipenable.bakingapp.widget.RecipeWidget;
 import ru.chipenable.bakingapp.widget.RecipeWidgetService;
 
 /**
@@ -34,5 +38,7 @@ public interface AppComponent {
     void inject(StepFragment obj);
     void inject(IngredientAndStepsPresenter obj);
     void inject(RecipeWidgetService obj);
+    void inject(RecipeViewsFactory obj);
+    void inject(RecipeWidget obj);
 
 }

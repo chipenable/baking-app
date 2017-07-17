@@ -1,6 +1,8 @@
 
 package ru.chipenable.bakingapp.model.data;
 
+import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -9,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 @AutoValue
-public abstract class Recipe {
+public abstract class Recipe implements Parcelable {
 
     public abstract long id();
 
