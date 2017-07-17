@@ -6,4 +6,6 @@
     <string name="ingredients">Ingredients</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="next_but">next</string>
+    <string name="prev_but">prev</string>
 </resources>

@@ -2,9 +2,6 @@ package ru.chipenable.bakingapp.widget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -17,6 +14,7 @@ import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.interactor.WidgetInteractor;
 import ru.chipenable.bakingapp.model.data.Ingredient;
+import ru.chipenable.bakingapp.model.data.Recipe;
 
 /**
  * Created by Pavel.B on 16.07.2017.
@@ -24,29 +22,27 @@ import ru.chipenable.bakingapp.model.data.Ingredient;
 
 public class RecipeViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
+    @Inject WidgetInteractor widgetInteractor;
 
-    private final String TAG = getClass().getName();
-
-    public Context context;
+    private Context context;
     private List<Ingredient> ingredientList;
 
-    public RecipeViewsFactory(Context context, Intent intent){
+    public RecipeViewsFactory(Context context, Intent intent, AppComponent component){
+        component.inject(this);
         this.context = context;
         this.ingredientList = new ArrayList<>();
-        Bundle args = intent.getBundleExtra("args");
-        ingredientList = args.getParcelableArrayList("ingredients");
-        Log.d(TAG, ingredientList.toString());
     }
 
     @Override
     public void onCreate() {
 
-
     }
 
     @Override
     public void onDataSetChanged() {
-
+        widgetInteractor.getRecipe()
+                .map(Recipe::ingredients)
+                .subscribe(ingredients -> ingredientList = ingredients);
     }
 
     @Override
@@ -88,6 +84,6 @@ public class RecipeViewsFactory implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 }

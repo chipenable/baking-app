@@ -84,10 +84,17 @@ public class Repo implements IRepo {
                     null, null, null);
 
             selection = RepoContract.StepEntry.COL_RECIPE_ID + " =? ";
+            Cursor ingredientsCursor = db.query(RepoContract.IngredientEntry.TABLE_NAME, null, selection, selArgs,
+                    null, null, null);
+
+
+            selection = RepoContract.StepEntry.COL_RECIPE_ID + " =? ";
             Cursor stepCursor = db.query(RepoContract.StepEntry.TABLE_NAME, null, selection, selArgs,
                     null, null, null);
-            Recipe recipe = converter.toRecipe(recipeCursor, stepCursor);
+
+            Recipe recipe = converter.toRecipe(recipeCursor, ingredientsCursor, stepCursor);
             recipeCursor.close();
+            ingredientsCursor.close();
             stepCursor.close();
             return recipe;
         });

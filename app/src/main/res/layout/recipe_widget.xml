@@ -13,7 +13,7 @@
         <TextView
             android:background="@color/colorPrimary"
             android:padding="8dp"
-            android:text="recipe"
+            android:id="@+id/recipe_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -21,23 +21,14 @@
             android:padding="4dp"
             android:id="@+id/ingredient_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <include
+            layout="@layout/navigation_bar"/>
+
     </LinearLayout>
 
-    <Button
-        android:visibility="gone"
-        android:id="@+id/prev_but"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="4dp"/>
 
-    <Button
-        android:visibility="gone"
-        android:id="@+id/next_but"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="4dp"/>
 
 </FrameLayout>

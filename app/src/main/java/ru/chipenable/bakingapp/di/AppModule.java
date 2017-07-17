@@ -1,6 +1,8 @@
 package ru.chipenable.bakingapp.di;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.google.gson.GsonBuilder;
 
@@ -35,6 +37,7 @@ import ru.chipenable.bakingapp.model.navigation.Router;
 public class AppModule {
 
     private final Context context;
+    private static final String PREF_NAME = "app_preferences";
 
     public AppModule(Context context){
         this.context = context;
@@ -106,14 +109,20 @@ public class AppModule {
 
     @Singleton
     @Provides
-    TimeController provideTimeController(@ApplicationContext Context context){
-        return new TimeController(context);
+    SharedPreferences providePreferences(@ApplicationContext Context context){
+        return context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
     }
 
     @Singleton
     @Provides
-    WidgetInteractor provideWidgetInteractor(IRepo repo){
-        return new WidgetInteractor(repo);
+    TimeController provideTimeController(SharedPreferences pref){
+        return new TimeController(pref);
+    }
+
+    @Singleton
+    @Provides
+    WidgetInteractor provideWidgetInteractor(IRepo repo, SharedPreferences pref){
+        return new WidgetInteractor(repo, pref);
     }
 
 }

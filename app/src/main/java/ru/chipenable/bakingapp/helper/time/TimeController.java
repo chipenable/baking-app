@@ -1,7 +1,5 @@
 package ru.chipenable.bakingapp.helper.time;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import io.reactivex.Observable;
@@ -13,13 +11,12 @@ import io.reactivex.Observable;
 public class TimeController {
 
     private static final String TAG = TimeController.class.getName();
-    private static final String PREF_NAME = "pref_name";
     private static final String UPDATE_DATE = "update_date";
     private static final long UPDATE_INTERVAL_S = 10*60;
     private SharedPreferences pref;
 
-    public TimeController(Context context){
-        this.pref = context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
+    public TimeController(SharedPreferences pref){
+        this.pref = pref;
     }
 
     public Observable<Boolean> isItTimeToUpdate(){

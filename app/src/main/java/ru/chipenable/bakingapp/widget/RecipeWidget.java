@@ -1,25 +1,18 @@
 package ru.chipenable.bakingapp.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.widget.RemoteViews;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
-import ru.chipenable.bakingapp.di.ApplicationContext;
 import ru.chipenable.bakingapp.interactor.WidgetInteractor;
-import ru.chipenable.bakingapp.model.data.Ingredient;
 
 /**
  * Implementation of App Widget functionality.
@@ -29,41 +22,46 @@ public class RecipeWidget extends AppWidgetProvider {
     @Inject WidgetInteractor widgetInteractor;
 
     private final String TAG = getClass().getName();
+    private final String NEXT_RECIPE_ACTION = "next_recipe";
+    private final String PREV_RECIPE_ACTION = "prev_recipe";
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        injectDependencies(context);
+        super.onReceive(context, intent);
+
+        String action = intent.getAction();
+        if (action.equalsIgnoreCase(NEXT_RECIPE_ACTION)){
+            widgetInteractor.incRecipeIndex();
+            updateWidgets(context);
+
+        }
+        else if (action.equalsIgnoreCase(PREV_RECIPE_ACTION)){
+            widgetInteractor.decRecipeIndex();
+            updateWidgets(context);
+        }
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-        if (widgetInteractor == null){
-            BakingApp app = (BakingApp)context.getApplicationContext();
-            app.getAppComponent().inject(this);
-        }
-
         for (int appWidgetId : appWidgetIds) {
+            widgetInteractor.getRecipe()
+                    .subscribe(recipe -> {
 
-            widgetInteractor.getIngredients()
-                    .map(ingredients -> {
-                        ArrayList<Parcelable> parcelables = new ArrayList<>();
-                        for(Ingredient i: ingredients){
-                            parcelables.add(i);
-                        }
-                        return parcelables;
-                    })
-                    .subscribe(ingredients -> {
-                        Log.d(TAG, "subscribe");
                         Intent intent = new Intent(context, RecipeWidgetService.class);
-                        try {
-                            Bundle bundle = new Bundle();
-                            bundle.putParcelableArrayList("ingredients", ingredients);
-                            intent.putExtra("args", bundle);
-                            RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
-                                    R.layout.recipe_widget);
-                            remoteViews.setRemoteAdapter(R.id.ingredient_list_view, intent);
-                            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-                        }
-                        catch(Exception e){
-                            Log.d(TAG, e.toString());
-                        }
+                        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
+                        remoteViews.setTextViewText(R.id.recipe_name, recipe.name());
 
+                        PendingIntent nextButIntent = getPendingSelfIntent(context, NEXT_RECIPE_ACTION);
+                        remoteViews.setOnClickPendingIntent(R.id.next_but, nextButIntent);
+
+                        PendingIntent prevButIntent = getPendingSelfIntent(context, PREV_RECIPE_ACTION);
+                        remoteViews.setOnClickPendingIntent(R.id.prev_but, prevButIntent);
+
+                        remoteViews.setRemoteAdapter(R.id.ingredient_list_view, intent);
+                        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+                        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.ingredient_list_view);
                     });
         }
     }
@@ -77,5 +75,28 @@ public class RecipeWidget extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+
+    /** util methods */
+
+    private void injectDependencies(Context context){
+        BakingApp app = (BakingApp) context.getApplicationContext();
+        app.getAppComponent().inject(this);
+    }
+
+    private void updateWidgets(Context context){
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
+        ComponentName thisWidget = new ComponentName(context.getApplicationContext(), RecipeWidget.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+        if (appWidgetIds != null && appWidgetIds.length > 0) {
+            onUpdate(context, appWidgetManager, appWidgetIds);
+        }
+    }
+
+    private PendingIntent getPendingSelfIntent(Context context, String action) {
+        Intent intent = new Intent(context, RecipeWidget.class);
+        intent.setAction(action);
+        return PendingIntent.getBroadcast(context, 0, intent, 0);
+    }
+
 }
 
