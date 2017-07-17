@@ -54,12 +54,13 @@ public class Converter {
                 long id = getLong(cursor, RecipeEntry._ID);
                 String name = getString(cursor, RecipeEntry.COL_NAME);
                 String imageUrl = getString(cursor, RecipeEntry.COL_IMAGE_URL);
+                int servings = getInt(cursor, RecipeEntry.COL_SERVINGS);
                 Recipe recipe = Recipe.builder()
                         .setId(id)
                         .setName(name)
                         .setIngredients(new ArrayList<>())
                         .setSteps(new ArrayList<>())
-                        .setServings(0)
+                        .setServings(servings)
                         .setImageUrl(imageUrl)
                         .build();
                 list.add(recipe);

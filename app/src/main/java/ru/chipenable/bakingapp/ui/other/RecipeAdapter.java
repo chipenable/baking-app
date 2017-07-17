@@ -71,6 +71,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         @BindView(R.id.recipe_image) ImageView recipeImageView;
         @BindView(R.id.recipe_name) TextView recipeNameView;
+        @BindView(R.id.servings_value) TextView servingsView;
 
         public ViewHolder(View view){
             super(view);
@@ -80,12 +81,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         public void bind(Recipe recipe){
             GlideApp.with(context)
-                    .load("sadf")
+                    .load(recipe.imageUrl())
                     .placeholder(R.drawable.ic_cake)
                     .error(R.drawable.ic_cake)
                     .into(recipeImageView);
 
             recipeNameView.setText(recipe.name());
+
+            int servings = recipe.servings();
+            String servingsStr = servings <= 0? "-":String.valueOf(servings);
+            servingsView.setText(servingsStr);
         }
 
         @Override
