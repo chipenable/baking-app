@@ -34,6 +34,7 @@ ext{
     exoplayerVersion = 'r2.2.0'
     autoValueVersion = '1.2'
     autoValueGsonVersion = '0.4.5'
+    autoValueParcelVersion = '0.2.5'
     espressoVersion = '2.2.2'
 
 }
