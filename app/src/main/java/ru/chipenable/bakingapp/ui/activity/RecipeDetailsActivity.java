@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import javax.inject.Inject;
@@ -19,25 +18,22 @@ import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.model.util.ActivityUtil;
 import ru.chipenable.bakingapp.presentation.presenter.IngredientAndStepsPresenter;
 import ru.chipenable.bakingapp.presentation.presenter.RecipeDetailsPresenter;
+import ru.chipenable.bakingapp.ui.common.CustomActivity;
 import ru.chipenable.bakingapp.ui.fragment.IngredientsFragment;
 import ru.chipenable.bakingapp.ui.fragment.RecipeDetailsFragment;
 import ru.chipenable.bakingapp.ui.fragment.StepFragment;
 
-public class RecipeDetailsActivity extends AppCompatActivity implements INavigator {
+public class RecipeDetailsActivity extends CustomActivity implements INavigator {
 
     @Inject Router router;
-
-    private final String TAG = getClass().getName();
-    private boolean isTablet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
         ((BakingApp)getApplication()).getAppComponent().inject(this);
-        checkConfiguration();
-        showRecipeDetails();
         ActivityUtil.setDisplayHomeAsUpEnabled(this);
+        showRecipeDetails();
     }
 
     @Override
@@ -74,20 +70,16 @@ public class RecipeDetailsActivity extends AppCompatActivity implements INavigat
         }
     }
 
-    private void checkConfiguration(){
-        isTablet = getResources().getBoolean(R.bool.is_tablet);
-    }
+
 
     private void showRecipeDetails(){
         if (isTablet){
             Bundle args = router.getArguments(RecipeDetailsPresenter.class.getName());
             long recipeId = args.getLong(ArgumentKeys.ID);
-            replaceFragment(R.id.master_container, new RecipeDetailsFragment(), false);
             replaceFragment(R.id.detail_container, IngredientsFragment.newInstance(recipeId), false);
         }
-        else{
-            replaceFragment(R.id.master_container, new RecipeDetailsFragment(), false);
-        }
+
+        replaceFragment(R.id.master_container, new RecipeDetailsFragment(), false);
     }
 
     private void showIngredients(){

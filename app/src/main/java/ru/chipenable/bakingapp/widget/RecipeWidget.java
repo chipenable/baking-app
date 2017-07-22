@@ -32,13 +32,20 @@ public class RecipeWidget extends AppWidgetProvider {
 
         String action = intent.getAction();
         if (action.equalsIgnoreCase(NEXT_RECIPE_ACTION)){
-            widgetInteractor.incRecipeIndex();
-            updateWidgets(context);
-
+            widgetInteractor.incRecipeIndex()
+                    .subscribe(result -> {
+                        if (result){
+                            updateWidgets(context);
+                        }
+                    });
         }
         else if (action.equalsIgnoreCase(PREV_RECIPE_ACTION)){
-            widgetInteractor.decRecipeIndex();
-            updateWidgets(context);
+            widgetInteractor.decRecipeIndex()
+                    .subscribe(result -> {
+                        if (result){
+                            updateWidgets(context);
+                        }
+                    });
         }
     }
 

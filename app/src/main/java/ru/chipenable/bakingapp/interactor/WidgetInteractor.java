@@ -28,27 +28,40 @@ public class WidgetInteractor {
         recipeIndex = pref.getInt(RECIPE_INDEX_KEY, 0);
     }
 
-    public void incRecipeIndex(){
+    public Observable<Boolean> incRecipeIndex(){
         recipeIndex = pref.getInt(RECIPE_INDEX_KEY, 0);
-        recipeIndex++;
-        pref.edit().putInt(RECIPE_INDEX_KEY, recipeIndex).commit();
+        return repo.getRecipeNames()
+                .map(List::size)
+                .map(recipeAmount -> {
+                    if (recipeIndex < recipeAmount - 1){
+                        recipeIndex++;
+                        pref.edit().putInt(RECIPE_INDEX_KEY, recipeIndex).commit();
+                        return true;
+                    }
+                    return false;
+                });
     }
 
-    public void decRecipeIndex(){
+    public Observable<Boolean> decRecipeIndex(){
+        boolean result = false;
+
         recipeIndex = pref.getInt(RECIPE_INDEX_KEY, 0);
         if (recipeIndex > 0) {
             recipeIndex--;
+            result = true;
         }
 
         pref.edit().putInt(RECIPE_INDEX_KEY, recipeIndex).commit();
+        return Observable.just(result);
     }
 
     public Observable<Recipe> getRecipe(){
         return repo.getRecipeNames()
                 .map(recipes -> recipes.get(recipeIndex))
-                .map(recipe -> recipe.id())
-                .concatMap(aLong -> repo.getRecipe(aLong))
-                .subscribeOn(Schedulers.trampoline());
+                .map(Recipe::id)
+                .concatMap(repo::getRecipe)
+                .subscribeOn(Schedulers.trampoline())
+                .observeOn(Schedulers.trampoline());
     }
 
 }

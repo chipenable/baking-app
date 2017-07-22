@@ -2,7 +2,6 @@ package ru.chipenable.bakingapp.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
@@ -11,8 +10,9 @@ import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.model.navigation.Command;
 import ru.chipenable.bakingapp.model.navigation.INavigator;
 import ru.chipenable.bakingapp.model.navigation.Router;
+import ru.chipenable.bakingapp.ui.common.CustomActivity;
 
-public class RecipeListActivity extends AppCompatActivity implements INavigator {
+public class RecipeListActivity extends CustomActivity implements INavigator {
 
     @Inject Router router;
 

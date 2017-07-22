@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <Button
+        android:textSize="12sp"
         android:text="@string/prev_but"
         android:layout_gravity="start"
         android:id="@+id/prev_but"
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"/>
 
     <Button
+        android:textSize="12sp"
         android:text="@string/next_but"
         android:layout_gravity="end"
         android:id="@+id/next_but"

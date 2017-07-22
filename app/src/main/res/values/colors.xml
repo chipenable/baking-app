@@ -11,4 +11,5 @@
     <color name="shield_color">#55555555</color>
     <color name="recipe_item_stroke">#bdbdbd</color>
     <color name="white">#ffffff</color>
+    <color name="widget_background">#aa999999</color>
 </resources>

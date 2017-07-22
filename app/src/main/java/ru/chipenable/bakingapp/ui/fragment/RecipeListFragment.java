@@ -2,6 +2,7 @@ package ru.chipenable.bakingapp.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,12 +50,15 @@ public class RecipeListFragment extends MvpAppCompatFragment implements IRecipeV
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, view);
         recipeAdapter = new RecipeAdapter(getContext());
         recipeAdapter.setItemClickListener(position -> presenter.showDetails(position));
-        recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        int columns = getResources().getInteger(R.integer.recipe_list_columns);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), columns);
+        recipeRecyclerView.setLayoutManager(layoutManager);
         recipeRecyclerView.setAdapter(recipeAdapter);
         return view;
     }
