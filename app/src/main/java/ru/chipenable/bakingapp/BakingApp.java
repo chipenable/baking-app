@@ -20,7 +20,11 @@ public class BakingApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        appComponent = DaggerAppComponent.builder()
+        appComponent = createAppComponent();
+    }
+
+    protected AppComponent createAppComponent(){
+        return DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
     }

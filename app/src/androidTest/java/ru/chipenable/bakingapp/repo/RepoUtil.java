@@ -15,7 +15,7 @@ import ru.chipenable.bakingapp.model.data.Step;
  * Created by Pavel.B on 12.06.2017.
  */
 
-public class Util {
+public class RepoUtil {
 
     public static List<Recipe> creteTestRecipeList(){
         List<Recipe> recipeList = new ArrayList<>();

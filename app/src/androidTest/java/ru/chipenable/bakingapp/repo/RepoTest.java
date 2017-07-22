@@ -17,7 +17,6 @@ import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.data.repo.Repo;
 import ru.chipenable.bakingapp.data.repo.RepoHelper;
 import ru.chipenable.bakingapp.model.data.Recipe;
-import ru.chipenable.bakingapp.model.data.Step;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 
@@ -60,9 +59,9 @@ public class RepoTest {
 
     @Test
     public void putRecipesAndGetRecipeNames(){
-        Util.deleteRecipes(repoHelper);
+        RepoUtil.deleteRecipes(repoHelper);
 
-        List<Recipe> recipeList = Util.creteTestRecipeList();
+        List<Recipe> recipeList = RepoUtil.creteTestRecipeList();
         TestObserver<Long> observerToPutRecipes = TestObserver.create();
         repo.putRecipes(recipeList)
                 .subscribe(observerToPutRecipes);
@@ -85,10 +84,10 @@ public class RepoTest {
     @Test
     public void putRecipesAndGetSteps() {
         //delete recipes
-        Util.deleteRecipes(repoHelper);
+        RepoUtil.deleteRecipes(repoHelper);
 
         //create test recipes and put them to repo
-        List<Recipe> recipeList = Util.creteTestRecipeList();
+        List<Recipe> recipeList = RepoUtil.creteTestRecipeList();
         TestObserver<Long> observerToPutRecipes = TestObserver.create();
         repo.putRecipes(recipeList)
                 .subscribe(observerToPutRecipes);

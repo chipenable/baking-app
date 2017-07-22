@@ -13,6 +13,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://maven.google.com" }
         jcenter()
     }
 }
@@ -25,7 +26,11 @@ ext{
     moxyVersion = '1.5.2'
     supportLibVersion = '25.3.1'
     constraintLayoutVersion = '1.0.2'
+    runnerVersion = '0.5'
+    rulesVersion = '0.5'
     junitVersion = '4.12'
+    mockitoVersion = '2.6.3'
+    espressoVersion = '2.2.2'
     adapterDelegatesVersion = '3.0.1'
     butterKnifeVersion = '8.4.0'
     daggerVersion = '2.11-rc2'
