@@ -1,4 +1,4 @@
-package ru.chipenable.bakingapp;
+package ru.chipenable.bakingapp.common;
 
 import android.app.Application;
 import android.app.Instrumentation;
@@ -21,7 +21,5 @@ public class MockTestRunner extends AndroidJUnitRunner {
 
         return super.newApplication(cl, MockApplication.class.getName(), context);
     }
-
-
 
 }

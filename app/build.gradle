@@ -13,7 +13,7 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
 
-        testInstrumentationRunner "ru.chipenable.bakingapp.MockTestRunner"
+        testInstrumentationRunner "ru.chipenable.bakingapp.common.MockTestRunner"
     }
 
     buildTypes {
@@ -54,6 +54,7 @@ dependencies {
     androidTestCompile "org.mockito:mockito-android:$rootProject.ext.mockitoVersion"
     androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
     androidTestCompile "com.android.support.test:rules:$rootProject.ext.rulesVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
 
     compile "com.android.support:support-v4:$rootProject.ext.supportLibVersion"
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"

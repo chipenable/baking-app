@@ -5,6 +5,8 @@ import android.appwidget.AppWidgetProvider;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import ru.chipenable.bakingapp.data.repo.IRepo;
+import ru.chipenable.bakingapp.model.navigation.Router;
 import ru.chipenable.bakingapp.presentation.presenter.IngredientAndStepsPresenter;
 import ru.chipenable.bakingapp.presentation.presenter.IngredientsPresenter;
 import ru.chipenable.bakingapp.presentation.presenter.RecipeDetailsPresenter;
@@ -41,4 +43,6 @@ public interface AppComponent {
     void inject(RecipeViewsFactory obj);
     void inject(RecipeWidget obj);
 
+    Router Router();
+    IRepo Repo();
 }

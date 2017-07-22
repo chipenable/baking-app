@@ -1,5 +1,6 @@
 package ru.chipenable.bakingapp.recipelist;
 
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,7 @@ import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.common.TestRecipes;
 import ru.chipenable.bakingapp.common.TestUtils;
 import ru.chipenable.bakingapp.model.data.Recipe;
+import ru.chipenable.bakingapp.ui.activity.RecipeDetailsActivity;
 import ru.chipenable.bakingapp.ui.activity.RecipeListActivity;
 import ru.chipenable.bakingapp.ui.fragment.RecipeListFragment;
 
@@ -24,6 +26,10 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -39,8 +45,8 @@ public class RecipeScreenTest {
     private List<Recipe> testRecipeList;
 
     @Rule
-    public ActivityTestRule<RecipeListActivity> activityRule =
-            new ActivityTestRule<>(RecipeListActivity.class);
+    public IntentsTestRule<RecipeListActivity> recipeListRule =
+            new IntentsTestRule<>(RecipeListActivity.class);
 
     @Before
     public void setup(){
@@ -48,14 +54,7 @@ public class RecipeScreenTest {
     }
 
     @Test
-    public void checkRecipeListFragmentNotNull(){
-        FragmentManager fm = activityRule.getActivity().getSupportFragmentManager();
-        RecipeListFragment f = (RecipeListFragment)fm.findFragmentById(R.id.recipe_list_fragment);
-        Assert.assertNotNull(f);
-    }
-
-    @Test
-    public void checkRecipeListContent(){
+    public void checkThatRecipesAreShown(){
         for(int i = 0; i < testRecipeList.size(); i++) {
             Recipe recipe = testRecipeList.get(i);
             onView(withRecyclerView(R.id.recipe_list).atPositionOnView(i, R.id.recipe_name))
@@ -68,9 +67,13 @@ public class RecipeScreenTest {
     }
 
     @Test
-    public void testRecipeListItems(){
+    public void checkThatRecipeDetailsCanBeShown(){
+        onView(withId(R.id.recipe_list))
+                .perform(actionOnItemAtPosition(0, click()));
 
-
+        String packageName = recipeListRule.getActivity().getApplicationContext().getPackageName();
+        intended(toPackage(packageName));
+        intended(hasComponent(RecipeDetailsActivity.class.getName()));
     }
 
 }
