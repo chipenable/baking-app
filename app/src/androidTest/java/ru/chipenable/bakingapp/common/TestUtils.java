@@ -16,22 +16,19 @@ import org.hamcrest.Matchers;
  */
 public class TestUtils {
 
-    public static <VH extends RecyclerView.ViewHolder> ViewAction
-    actionOnItemViewAtPosition(int position, @IdRes int viewId, ViewAction viewAction) {
+    public static <VH extends RecyclerView.ViewHolder> ViewAction actionOnItemViewAtPosition(
+            int position, @IdRes int viewId, ViewAction viewAction) {
         return new ActionOnItemViewAtPositionViewAction(position, viewId, viewAction);
     }
 
-    private static final class ActionOnItemViewAtPositionViewAction<VH extends RecyclerView
-            .ViewHolder>
-            implements
+    private static final class ActionOnItemViewAtPositionViewAction<VH extends RecyclerView.ViewHolder>
+            implements ViewAction {
 
-            ViewAction {
         private final int position;
         private final ViewAction viewAction;
         private final int viewId;
 
-        private ActionOnItemViewAtPositionViewAction(int position,
-                                                     @IdRes int viewId,
+        private ActionOnItemViewAtPositionViewAction(int position, @IdRes int viewId,
                                                      ViewAction viewAction) {
             this.position = position;
             this.viewAction = viewAction;
@@ -60,22 +57,23 @@ public class TestUtils {
 
             if (targetView == null) {
                 throw (new PerformException.Builder()).withActionDescription(this.toString())
-                        .withViewDescription(
-
-                                HumanReadables.describe(view))
+                        .withViewDescription(HumanReadables.describe(view))
                         .withCause(new IllegalStateException(
                                 "No view with id "
                                         + this.viewId
                                         + " found at position: "
-                                        + this.position))
+                                        + this.position)
+                        )
                         .build();
-            } else {
+            }
+            else {
                 this.viewAction.perform(uiController, targetView);
             }
         }
     }
 
     private static final class ScrollToPositionViewAction implements ViewAction {
+
         private final int position;
 
         private ScrollToPositionViewAction(int position) {
