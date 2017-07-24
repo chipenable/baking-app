@@ -1,11 +1,8 @@
-package ru.chipenable.bakingapp.recipelist;
+package ru.chipenable.bakingapp.screens;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v4.app.FragmentManager;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,16 +12,12 @@ import java.util.List;
 
 import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.common.TestRecipes;
-import ru.chipenable.bakingapp.common.TestUtils;
 import ru.chipenable.bakingapp.model.data.Recipe;
 import ru.chipenable.bakingapp.ui.activity.RecipeDetailsActivity;
 import ru.chipenable.bakingapp.ui.activity.RecipeListActivity;
-import ru.chipenable.bakingapp.ui.fragment.RecipeListFragment;
-
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.intent.Intents.intended;
@@ -32,7 +25,6 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static ru.chipenable.bakingapp.common.TestUtils.withRecyclerView;
 
 /**
@@ -50,6 +42,17 @@ public class RecipeScreenTest {
 
     @Before
     public void setup(){
+        /*Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+        MockApplication mockApplication =
+                (MockApplication)instrumentation.getTargetContext().getApplicationContext();
+        IRepo repo = mockApplication.getAppComponent().Repo();
+
+        repo.putRecipes(new ArrayList<>())
+                .concatMap(aLong -> repo.getRecipeNames())
+                .observeOn(Schedulers.trampoline())
+                .subscribeOn(Schedulers.trampoline())
+                .subscribe(recipes -> {});*/
+
         testRecipeList = new TestRecipes().getRecipes();
     }
 

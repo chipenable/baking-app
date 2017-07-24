@@ -1,6 +1,7 @@
 package ru.chipenable.bakingapp.common;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import org.mockito.Mockito;
 
@@ -17,8 +18,10 @@ import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.data.repo.Repo;
 import ru.chipenable.bakingapp.data.repo.RepoHelper;
 import ru.chipenable.bakingapp.di.AppModule;
+import ru.chipenable.bakingapp.helper.time.TimeController;
 import ru.chipenable.bakingapp.model.data.Recipe;
 
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 
@@ -35,10 +38,18 @@ public class TestAppModule extends AppModule {
 
     @Override
     public HttpClient provideClient(){
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        HttpClient httpClient = mock(HttpClient.class);
         Observable<List<Recipe>> recipeList = Observable.just(new TestRecipes().getRecipes());
         when(httpClient.getRecipes()).thenReturn(recipeList);
         return httpClient;
+    }
+
+    @Override
+    public TimeController provideTimeController(SharedPreferences pref){
+        TimeController timeController = mock(TimeController.class);
+        when(timeController.isItTimeToUpdate()).thenReturn(Observable.just(true));
+        doNothing().when(timeController).saveTimeOfLastUpdate();
+        return timeController;
     }
 
 }
