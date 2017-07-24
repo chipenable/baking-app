@@ -42,7 +42,7 @@ public class RecipeViewsFactory implements RemoteViewsService.RemoteViewsFactory
     public void onDataSetChanged() {
         widgetInteractor.getRecipe()
                 .map(Recipe::ingredients)
-                .subscribe(ingredients -> ingredientList = ingredients);
+                .subscribe(ingredients -> ingredientList = ingredients, throwable -> {});
     }
 
     @Override

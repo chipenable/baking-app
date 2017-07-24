@@ -13,15 +13,17 @@ import ru.chipenable.bakingapp.model.data.Recipe;
  * Created by Pavel.B on 12.05.2017.
  */
 
+@StateStrategyType(OneExecutionStateStrategy.class)
 public interface IRecipeView extends MvpView {
 
-    @StateStrategyType(OneExecutionStateStrategy.class)
     void showRecipes(List<Recipe> list);
 
-    @StateStrategyType(OneExecutionStateStrategy.class)
     void showLoading();
 
-    @StateStrategyType(OneExecutionStateStrategy.class)
     void hideLoading();
+
+    void hideSwipeRefresh();
+
+    void showNetworkError();
 
 }

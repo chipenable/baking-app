@@ -25,6 +25,7 @@ import ru.chipenable.bakingapp.model.data.Recipe;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
     private Context context;
+    private View emptyView;
     private List<Recipe> items;
     private IOnItemClickListener itemClickListener;
 
@@ -36,17 +37,20 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         itemClickListener = listener;
     }
 
-    public RecipeAdapter(Context context){
-        this(context, new ArrayList<>());
+    public RecipeAdapter(Context context, View emptyView){
+        this(context, new ArrayList<>(), emptyView);
     }
 
-    public RecipeAdapter(Context context, List<Recipe> items){
+    public RecipeAdapter(Context context, List<Recipe> items, View emptyView){
         this.context = context;
         this.items = items;
+        this.emptyView = emptyView;
+        showEmptyView(items);
     }
 
     public void setItems(List<Recipe> items){
         this.items = items;
+        showEmptyView(items);
         notifyDataSetChanged();
     }
 
@@ -98,6 +102,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             if (itemClickListener != null){
                 itemClickListener.onItemClick(getAdapterPosition());
             }
+        }
+    }
+
+    /** util methods */
+
+    private void showEmptyView(List<Recipe> list){
+        if (emptyView != null) {
+            int visibility = (list == null || list.isEmpty()) ? View.VISIBLE : View.INVISIBLE;
+            this.emptyView.setVisibility(visibility);
         }
     }
 

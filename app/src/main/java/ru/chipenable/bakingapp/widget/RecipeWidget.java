@@ -55,21 +55,25 @@ public class RecipeWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             widgetInteractor.getRecipe()
                     .subscribe(recipe -> {
+                                Intent intent = new Intent(context, RecipeWidgetService.class);
+                                RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+                                        R.layout.recipe_widget);
+                                remoteViews.setTextViewText(R.id.recipe_name, recipe.name());
 
-                        Intent intent = new Intent(context, RecipeWidgetService.class);
-                        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
-                        remoteViews.setTextViewText(R.id.recipe_name, recipe.name());
+                                PendingIntent nextButIntent = getPendingSelfIntent(context, NEXT_RECIPE_ACTION);
+                                remoteViews.setOnClickPendingIntent(R.id.next_but, nextButIntent);
 
-                        PendingIntent nextButIntent = getPendingSelfIntent(context, NEXT_RECIPE_ACTION);
-                        remoteViews.setOnClickPendingIntent(R.id.next_but, nextButIntent);
+                                PendingIntent prevButIntent = getPendingSelfIntent(context, PREV_RECIPE_ACTION);
+                                remoteViews.setOnClickPendingIntent(R.id.prev_but, prevButIntent);
 
-                        PendingIntent prevButIntent = getPendingSelfIntent(context, PREV_RECIPE_ACTION);
-                        remoteViews.setOnClickPendingIntent(R.id.prev_but, prevButIntent);
-
-                        remoteViews.setRemoteAdapter(R.id.ingredient_list_view, intent);
-                        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-                        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.ingredient_list_view);
-                    });
+                                remoteViews.setRemoteAdapter(R.id.ingredient_list_view, intent);
+                                remoteViews.setEmptyView(R.id.ingredient_list_view, R.id.empty_view);
+                                appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+                                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,
+                                        R.id.ingredient_list_view);
+                            },
+                            throwable -> {}
+                    );
         }
     }
 

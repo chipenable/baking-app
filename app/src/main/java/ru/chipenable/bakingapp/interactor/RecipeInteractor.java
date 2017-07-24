@@ -42,6 +42,15 @@ public class RecipeInteractor {
                 .observeOn(uiScheduler);
     }
 
+    public Observable<Long> forceUpdateRecipes(){
+        return client.getRecipes()
+                .concatMap(recipes -> repo.putRecipes(recipes))
+                .doOnNext(aLong -> timeController.saveTimeOfLastUpdate())
+                .subscribeOn(ioScheduler)
+                .observeOn(uiScheduler);
+
+    }
+
     public Observable<List<Recipe>> subscribeToRecipes(){
         return repo.getRecipeNames()
                 .subscribeOn(ioScheduler)

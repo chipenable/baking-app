@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:textColor="@color/white"
                 android:id="@+id/recipe_name"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -47,5 +48,13 @@
             android:padding="4dp"/>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_gravity="center"
+        android:visibility="visible"
+        android:id="@+id/empty_view"
+        android:text="@string/recipe_list_is_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

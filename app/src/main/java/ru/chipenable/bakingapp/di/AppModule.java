@@ -109,19 +109,19 @@ public class AppModule {
 
     @Singleton
     @Provides
-    SharedPreferences providePreferences(@ApplicationContext Context context){
+    public SharedPreferences providePreferences(@ApplicationContext Context context){
         return context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
     }
 
     @Singleton
     @Provides
-    TimeController provideTimeController(SharedPreferences pref){
+    public TimeController provideTimeController(SharedPreferences pref){
         return new TimeController(pref);
     }
 
     @Singleton
     @Provides
-    WidgetInteractor provideWidgetInteractor(IRepo repo, SharedPreferences pref){
+    public WidgetInteractor provideWidgetInteractor(IRepo repo, SharedPreferences pref){
         return new WidgetInteractor(repo, pref);
     }
 

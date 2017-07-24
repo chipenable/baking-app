@@ -68,4 +68,20 @@ public class RecipeListPresenter extends MvpPresenter<IRecipeView> {
         router.putCommand(Command.SHOW_DETAILS, RecipeDetailsPresenter.class.getName(), args);
     }
 
+    public void forceUpdateRecipes(){
+        recipeInteractor.forceUpdateRecipes()
+                .doAfterTerminate(() -> getViewState().hideSwipeRefresh())
+                .subscribe(
+                        aLong -> {},
+                        this::handleErrors,
+                        () -> {}
+                );
+    }
+
+    /** util methods */
+
+    private void handleErrors(Throwable throwable){
+        getViewState().showNetworkError();
+    }
+
 }
