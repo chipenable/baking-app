@@ -8,4 +8,5 @@
     <string name="servings">servings:</string>
     <string name="network_error">The app can not connect to service</string>
     <string name="recipe_list_is_empty">Recipe list is empty</string>
+    <string name="video_is_not_available">Video is not available</string>
 </resources>

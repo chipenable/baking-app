@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -34,6 +35,8 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     @InjectPresenter
     StepPresenter presenter;
 
+    @BindView(R.id.empty_view) TextView emptyView;
+    @BindView(R.id.video_frame) FrameLayout videoFrameView;
     @BindView(R.id.player_view) SimpleExoPlayerView playerView;
     @BindView(R.id.step_description)  TextView stepDescriptionView;
 
@@ -99,8 +102,15 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
 
     @Override
     public void showStep(Step step) {
-        videoPlayer = ExoPlayer.getInstance(getContext(), playerView,
-                step.videoURL(), step.thumbnailURL());
+        String videoUrl = step.videoURL();
+        if (videoUrl == null || videoUrl.isEmpty()) {
+            playerView.setVisibility(View.INVISIBLE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else{
+            videoPlayer = ExoPlayer.getInstance(getContext(), playerView,
+                    step.videoURL(), step.thumbnailURL());
+        }
         stepDescriptionView.setText(step.description());
     }
 

@@ -23,10 +23,14 @@
         app:layout_constraintTop_toBottomOf="@+id/video_frame"/>
 
     <FrameLayout
-        android:background="@color/white"
+        android:background="@color/grey"
         android:id="@+id/video_frame"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,6 +45,16 @@
             android:id="@+id/player_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
+
+        <TextView
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/video_is_not_available"
+            android:id="@+id/empty_view"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </FrameLayout>
 
