@@ -12,7 +12,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.chipenable.bakingapp.R;
-import ru.chipenable.bakingapp.model.data.Ingredient;
 import ru.chipenable.bakingapp.model.data.Recipe;
 import ru.chipenable.bakingapp.model.data.Step;
 
@@ -81,7 +80,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        @BindView(R.id.recipe_name) TextView recipeNameView;
+        @BindView(R.id.step_name) TextView stepNameView;
 
         public ViewHolder(View view){
             super(view);
@@ -90,11 +89,11 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
         }
 
         public void bindIngredient(){
-            recipeNameView.setText(R.string.ingredients);
+            stepNameView.setText(R.string.ingredients);
         }
 
         public void bindStep(Step step){
-            recipeNameView.setText(step.shortDescription());
+            stepNameView.setText(step.shortDescription());
         }
 
         @Override

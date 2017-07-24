@@ -1,8 +1,10 @@
 package ru.chipenable.bakingapp.screens;
 
+import android.content.Intent;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,26 +40,22 @@ public class RecipeScreenTest {
 
     @Rule
     public IntentsTestRule<RecipeListActivity> recipeListRule =
-            new IntentsTestRule<>(RecipeListActivity.class);
+            new IntentsTestRule<>(RecipeListActivity.class, true, false);
 
     @Before
-    public void setup(){
-        /*Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
-        MockApplication mockApplication =
-                (MockApplication)instrumentation.getTargetContext().getApplicationContext();
-        IRepo repo = mockApplication.getAppComponent().Repo();
-
-        repo.putRecipes(new ArrayList<>())
-                .concatMap(aLong -> repo.getRecipeNames())
-                .observeOn(Schedulers.trampoline())
-                .subscribeOn(Schedulers.trampoline())
-                .subscribe(recipes -> {});*/
-
+    public void setUp(){
         testRecipeList = new TestRecipes().getRecipes();
+    }
+
+    @After
+    public void tearDown(){
+        recipeListRule.getActivity().finish();
     }
 
     @Test
     public void checkThatRecipesAreShown(){
+        recipeListRule.launchActivity(new Intent());
+
         for(int i = 0; i < testRecipeList.size(); i++) {
             Recipe recipe = testRecipeList.get(i);
             onView(withRecyclerView(R.id.recipe_list).atPositionOnView(i, R.id.recipe_name))
@@ -71,6 +69,8 @@ public class RecipeScreenTest {
 
     @Test
     public void checkThatRecipeDetailsCanBeShown(){
+        recipeListRule.launchActivity(new Intent());
+
         onView(withId(R.id.recipe_list))
                 .perform(actionOnItemAtPosition(0, click()));
 

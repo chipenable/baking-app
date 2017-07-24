@@ -1,6 +1,7 @@
 package ru.chipenable.bakingapp.repo;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import junit.framework.Assert;
 
@@ -12,11 +13,14 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import io.reactivex.observers.TestObserver;
+import ru.chipenable.bakingapp.common.TestRecipes;
 import ru.chipenable.bakingapp.data.repo.Converter;
 import ru.chipenable.bakingapp.data.repo.IRepo;
 import ru.chipenable.bakingapp.data.repo.Repo;
 import ru.chipenable.bakingapp.data.repo.RepoHelper;
+import ru.chipenable.bakingapp.model.data.Ingredient;
 import ru.chipenable.bakingapp.model.data.Recipe;
+import ru.chipenable.bakingapp.model.data.Step;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 
@@ -26,6 +30,7 @@ import static android.support.test.InstrumentationRegistry.getTargetContext;
 @RunWith(AndroidJUnit4.class)
 public class RepoTest {
 
+    private List<Recipe> recipeList;
     private RepoHelper repoHelper;
     private Converter converter;
     private IRepo repo;
@@ -36,6 +41,7 @@ public class RepoTest {
         repoHelper = new RepoHelper(getTargetContext());
         converter = new Converter();
         repo = new Repo(repoHelper, converter);
+        recipeList = new TestRecipes().getRecipes();
     }
 
     @After
@@ -58,22 +64,19 @@ public class RepoTest {
     }
 
     @Test
-    public void putRecipesAndGetRecipeNames(){
-        RepoUtil.deleteRecipes(repoHelper);
-
-        List<Recipe> recipeList = RepoUtil.creteTestRecipeList();
-        TestObserver<Long> observerToPutRecipes = TestObserver.create();
+    public void getRecipeNames(){
+        TestObserver<Long> recipesObserver = TestObserver.create();
         repo.putRecipes(recipeList)
-                .subscribe(observerToPutRecipes);
-        observerToPutRecipes.assertNoErrors();
-        observerToPutRecipes.assertValueCount(recipeList.size());
+                .subscribe(recipesObserver);
+        recipesObserver.assertNoErrors();
+        recipesObserver.assertValueCount(1);
 
-        TestObserver<List<Recipe>> observerToGetRecipeNames = TestObserver.create();
+        TestObserver<List<Recipe>> recipeNamesObserver = TestObserver.create();
         repo.getRecipeNames()
-                .subscribe(observerToGetRecipeNames);
-        observerToGetRecipeNames.assertNoErrors();
-        observerToGetRecipeNames.assertValueCount(1);
-        List<Recipe> actualRecipeList = observerToGetRecipeNames.values().get(0);
+                .subscribe(recipeNamesObserver);
+        recipeNamesObserver.assertNoErrors();
+        recipeNamesObserver.assertValueCount(1);
+        List<Recipe> actualRecipeList = recipeNamesObserver.values().get(0);
         for(int i = 0; i < recipeList.size(); i++){
             Recipe expectedRecipe = recipeList.get(i);
             Recipe actualRecipe = actualRecipeList.get(i);
@@ -82,41 +85,98 @@ public class RepoTest {
     }
 
     @Test
-    public void putRecipesAndGetSteps() {
-        //delete recipes
-        RepoUtil.deleteRecipes(repoHelper);
-
-        //create test recipes and put them to repo
-        List<Recipe> recipeList = RepoUtil.creteTestRecipeList();
-        TestObserver<Long> observerToPutRecipes = TestObserver.create();
+    public void getRecipeById(){
+        //put test recipes to repo
+        TestObserver<Long> recipesObserver = TestObserver.create();
         repo.putRecipes(recipeList)
-                .subscribe(observerToPutRecipes);
-        observerToPutRecipes.assertNoErrors();
-        observerToPutRecipes.assertValueCount(recipeList.size());
+                .subscribe(recipesObserver);
+        recipesObserver.assertNoErrors();
+        recipesObserver.assertValueCount(1);
 
-        //get recipe names to retrieve database id
-        TestObserver<List<Recipe>> observerToGetRecipeNames = TestObserver.create();
+        //get recipe names to retrieve recipe id
+        TestObserver<List<Recipe>> recipeNamesObserver = TestObserver.create();
         repo.getRecipeNames()
-                .subscribe(observerToGetRecipeNames);
-        observerToGetRecipeNames.assertNoErrors();
-        observerToGetRecipeNames.assertValueCount(1);
-        List<Recipe> actualRecipeList = observerToGetRecipeNames.values().get(0);
+                .subscribe(recipeNamesObserver);
+        recipeNamesObserver.assertNoErrors();
+        recipeNamesObserver.assertValueCount(1);
+        List<Recipe> actualRecipeList = recipeNamesObserver.values().get(0);
 
         //get recipe from repo
-        TestObserver<Recipe> observerToGetRecipe = TestObserver.create();
+        TestObserver<Recipe> recipeObserver = TestObserver.create();
         repo.getRecipe(actualRecipeList.get(0).id())
-                .subscribe(observerToGetRecipe);
-        observerToGetRecipe.assertNoErrors();
-        observerToGetRecipe.assertValueCount(1);
+                .subscribe(recipeObserver);
+        recipeObserver.assertNoErrors();
+        recipeObserver.assertValueCount(1);
 
         //check that it is equals to expected recipe
         Recipe expectedRecipe = recipeList.get(0);
-        Recipe actualRecipe = observerToGetRecipe.values().get(0);
-        Assert.assertEquals(expectedRecipe.name(), actualRecipe.name());
-        Assert.assertEquals(expectedRecipe.imageUrl(), actualRecipe.imageUrl());
-        Assert.assertEquals(expectedRecipe.servings(), actualRecipe.servings());
-
-
+        Recipe actualRecipe = recipeObserver.values().get(0);
+        Assert.assertEquals(expectedRecipe, actualRecipe);
     }
+
+    @Test
+    public void getSteps() {
+        //put test recipes to repo
+        TestObserver<Long> recipesObserver = TestObserver.create();
+        repo.putRecipes(recipeList)
+                .subscribe(recipesObserver);
+        recipesObserver.assertNoErrors();
+        recipesObserver.assertValueCount(1);
+
+        //get recipe names to retrieve database id
+        TestObserver<List<Recipe>> recipeNamesObserver = TestObserver.create();
+        repo.getRecipeNames()
+                .subscribe(recipeNamesObserver);
+        recipeNamesObserver.assertNoErrors();
+        recipeNamesObserver.assertValueCount(1);
+        List<Recipe> actualRecipeList = recipeNamesObserver.values().get(0);
+
+        //get recipe id
+        long recipeId = actualRecipeList.get(0).id();
+        List<Step> expectedSteps = recipeList.get(0).steps();
+
+        //check steps
+        for(Step expectedStep: expectedSteps){
+            TestObserver<Step> stepObserver = TestObserver.create();
+            repo.getStep(recipeId, expectedStep.id())
+                    .subscribe(stepObserver);
+
+            stepObserver.assertNoErrors();
+            stepObserver.assertValueCount(1);
+            Step actualStep = stepObserver.values().get(0);
+            Assert.assertEquals(expectedStep, actualStep);
+        }
+    }
+
+    @Test
+    public void getIngredients(){
+        //put test recipes to repo
+        TestObserver<Long> recipeListObserver = TestObserver.create();
+        repo.putRecipes(recipeList)
+                .subscribe(recipeListObserver);
+        recipeListObserver.assertNoErrors();
+        recipeListObserver.assertValueCount(1);
+
+        //get recipe names to retrieve database id
+        TestObserver<List<Recipe>> recipeNamesObserver = TestObserver.create();
+        repo.getRecipeNames()
+                .subscribe(recipeNamesObserver);
+        recipeNamesObserver.assertNoErrors();
+        recipeNamesObserver.assertValueCount(1);
+        List<Recipe> actualRecipeList = recipeNamesObserver.values().get(0);
+
+        //get ingredients from repo
+        TestObserver<List<Ingredient>> ingredientsObserver = TestObserver.create();
+        repo.getIngredients(actualRecipeList.get(0).id())
+                .subscribe(ingredientsObserver);
+        ingredientsObserver.assertNoErrors();
+        ingredientsObserver.assertValueCount(1);
+
+        //check ingredients
+        List<Ingredient> expectedIngredients = recipeList.get(0).ingredients();
+        List<Ingredient> actualIngredients = ingredientsObserver.values().get(0);
+        Assert.assertEquals(expectedIngredients, actualIngredients);
+    }
+
 
 }

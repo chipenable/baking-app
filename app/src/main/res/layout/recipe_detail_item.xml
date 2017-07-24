@@ -16,7 +16,7 @@
     <TextView
         android:padding="8dp"
         android:textSize="24sp"
-        android:id="@+id/recipe_name"
+        android:id="@+id/step_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

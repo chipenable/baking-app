@@ -85,18 +85,7 @@ public class Converter {
         if (stepCursor.getCount() > 0) {
             stepCursor.moveToFirst();
             do {
-                String description = getString(stepCursor, StepEntry.COL_DESCRIPTION);
-                String shortDescription = getString(stepCursor, StepEntry.COL_SHORT_DESCRIPTION);
-                String videoUrl = getString(stepCursor, StepEntry.COL_VIDEO_URL);
-                String thumbnailUrl = getString(stepCursor, StepEntry.COL_THUMBNAIL_URL);
-                Step step = Step.builder()
-                        .setId(0)
-                        .setShortDescription(shortDescription)
-                        .setDescription(description)
-                        .setVideoURL(videoUrl)
-                        .setThumbnailURL(thumbnailUrl)
-                        .build();
-                stepList.add(step);
+                stepList.add(toStep(stepCursor));
             } while (stepCursor.moveToNext());
         }
 
@@ -118,7 +107,6 @@ public class Converter {
         String thumbnailUrl = "";
 
         if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
             num = getInt(cursor, StepEntry.COL_STEP_NUM);
             shortDescription = getString(cursor, StepEntry.COL_SHORT_DESCRIPTION);
             description = getString(cursor, StepEntry.COL_DESCRIPTION);

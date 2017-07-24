@@ -109,6 +109,8 @@ public class Repo implements IRepo {
             String[] selArgs = {Long.toString(id), Integer.toString(num)};
             Cursor cursor = db.query(RepoContract.StepEntry.TABLE_NAME, null, selection, selArgs,
                     null, null, null);
+
+            cursor.moveToFirst();
             Step step = converter.toStep(cursor);
             cursor.close();
             return step;

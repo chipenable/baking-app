@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,7 +46,7 @@ public class IngredientsScreenTest {
             new ActivityTestRule<>(IngredientAndStepsActivity.class, true, false);
 
     @Before
-    public void setup(){
+    public void setUp(){
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
         MockApplication mockApplication =
                 (MockApplication)instrumentation.getTargetContext().getApplicationContext();
@@ -70,10 +71,14 @@ public class IngredientsScreenTest {
                 });
     }
 
+    @After
+    public void tearDown(){
+        activityRule.getActivity().finish();
+    }
+
     @Test
     public void checkThatIngredientsAreShown(){
         activityRule.launchActivity(new Intent());
-
         List<Ingredient> ingredientList = testRecipeList.get(recipePos).ingredients();
 
         for(int i = 0; i < ingredientList.size(); i++) {
