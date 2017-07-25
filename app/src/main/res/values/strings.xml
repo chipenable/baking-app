@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">BakingApp</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="appwidget_text">Recipe Widget</string>
+    <string name="add_widget">Add widget</string>
+    <string name="next_but">next</string>
+    <string name="prev_but">prev</string>
+    <string name="servings">servings:</string>
+    <string name="network_error">The app can not connect to service</string>
+    <string name="recipe_list_is_empty">Recipe list is empty</string>
+    <string name="video_is_not_available">Video is not available</string>
 </resources>
