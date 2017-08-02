@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
@@ -76,10 +77,10 @@ public class RecipeDetailsActivity extends CustomActivity implements INavigator 
         if (isTablet){
             Bundle args = router.getArguments(RecipeDetailsPresenter.class.getName());
             long recipeId = args.getLong(ArgumentKeys.ID);
-            replaceFragment(R.id.detail_container, IngredientsFragment.newInstance(recipeId), false);
+            addFragment(R.id.detail_container, () -> IngredientsFragment.newInstance(recipeId), false);
         }
 
-        replaceFragment(R.id.master_container, new RecipeDetailsFragment(), false);
+        addFragment(R.id.master_container, RecipeDetailsFragment::new, false);
     }
 
     private void showIngredients(){
@@ -115,5 +116,7 @@ public class RecipeDetailsActivity extends CustomActivity implements INavigator 
         }
         ft.commit();
     }
+
+
 
 }

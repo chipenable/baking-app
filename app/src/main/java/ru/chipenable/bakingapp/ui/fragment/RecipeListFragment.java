@@ -1,6 +1,7 @@
 package ru.chipenable.bakingapp.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -45,11 +46,21 @@ public class RecipeListFragment extends MvpAppCompatFragment implements IRecipeV
     RecipeListPresenter presenter;
 
     private RecipeAdapter recipeAdapter;
+    private Parcelable recipeListState;
+    private static final String RECIPE_LIST_STATE = "recipe_list_state";
 
     @ProvidePresenter
     RecipeListPresenter providePresenter(){
         AppComponent component = ((BakingApp)getActivity().getApplication()).getAppComponent();
         return new RecipeListPresenter(component);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null){
+            recipeListState = savedInstanceState.getParcelable(RECIPE_LIST_STATE);
+        }
     }
 
     @Nullable
@@ -64,13 +75,29 @@ public class RecipeListFragment extends MvpAppCompatFragment implements IRecipeV
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), columns);
         recipeRecyclerView.setLayoutManager(layoutManager);
         recipeRecyclerView.setAdapter(recipeAdapter);
-        swipeRefreshView.setOnRefreshListener(() -> presenter.forceUpdateRecipes());
+
+        swipeRefreshView.setOnRefreshListener(() -> {
+            recipeListState = null;
+            presenter.forceUpdateRecipes();
+        });
         return view;
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(RECIPE_LIST_STATE,
+                recipeRecyclerView.getLayoutManager().onSaveInstanceState());
+    }
+
+    /** view interface */
+
+    @Override
     public void showRecipes(List<Recipe> list) {
         recipeAdapter.setItems(list);
+        if (recipeListState != null){
+            recipeRecyclerView.getLayoutManager().onRestoreInstanceState(recipeListState);
+        }
     }
 
     @Override
