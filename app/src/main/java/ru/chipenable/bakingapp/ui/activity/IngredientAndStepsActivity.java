@@ -1,8 +1,6 @@
 package ru.chipenable.bakingapp.ui.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 import android.widget.Button;
 
@@ -27,6 +25,9 @@ public class IngredientAndStepsActivity extends CustomMvpActivity implements IIn
 
     @InjectPresenter
     IngredientAndStepsPresenter presenter;
+
+    private static final String INGREDIENTS_TAG = "ingredients_tag";
+    private static final String STEP_TAG = "step_tag";
 
     @ProvidePresenter
     IngredientAndStepsPresenter providePresenter(){
@@ -55,19 +56,14 @@ public class IngredientAndStepsActivity extends CustomMvpActivity implements IIn
 
     @Override
     public void showData(long recipeId, int position) {
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment newFragment;
-
         if (position == 0) {
-            newFragment = IngredientsFragment.newInstance(recipeId);
+            replaceFragment(R.id.fragment_container, () -> IngredientsFragment.newInstance(recipeId),
+                    false, INGREDIENTS_TAG);
         }
         else {
-            newFragment = StepFragment.newInstance(recipeId, position - 1);
+            replaceFragment(R.id.fragment_container, () -> StepFragment.newInstance(recipeId, position - 1),
+                    false, STEP_TAG + String.valueOf(position - 1));
         }
-
-        fm.beginTransaction()
-                .replace(R.id.fragment_container, newFragment)
-                .commit();
     }
 
     @Override

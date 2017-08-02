@@ -3,7 +3,6 @@ package ru.chipenable.bakingapp.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,12 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.helper.player.ExoPlayer;
 import ru.chipenable.bakingapp.helper.player.IVideoPlayer;
+import ru.chipenable.bakingapp.helper.player.VideoPlayerState;
 import ru.chipenable.bakingapp.model.data.Step;
 import ru.chipenable.bakingapp.presentation.presenter.StepPresenter;
 import ru.chipenable.bakingapp.presentation.view.IStepView;
@@ -41,9 +40,11 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     @BindView(R.id.step_description)  TextView stepDescriptionView;
 
     private IVideoPlayer videoPlayer;
+    private VideoPlayerState videoPlayerState;
     private final String TAG = getClass().getName();
     private static final String RECIPE_ID_KEY = "recipe_id";
     private static final String STEP_NUM_KEY = "step_num";
+    private static final String VIDEO_PLAYER_STATE_KEY = "video_player_state";
 
     public static StepFragment newInstance(long recipeId, int step){
         Bundle args = new Bundle();
@@ -71,6 +72,10 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
         if (args != null && savedInstanceState == null){
             presenter.init(args.getLong(RECIPE_ID_KEY), args.getInt(STEP_NUM_KEY));
         }
+
+        if (savedInstanceState != null){
+            videoPlayerState = savedInstanceState.getParcelable(VIDEO_PLAYER_STATE_KEY);
+        }
     }
 
     @Override
@@ -91,6 +96,7 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     @Override
     public void onPause() {
         super.onPause();
+        videoPlayerState = videoPlayer == null? null : videoPlayer.getState();
         presenter.stop();
     }
 
@@ -98,6 +104,14 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     public void onDestroy() {
         super.onDestroy();
         releaseResources();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (videoPlayerState != null) {
+            outState.putParcelable(VIDEO_PLAYER_STATE_KEY, videoPlayerState);
+        }
     }
 
     @Override
@@ -110,6 +124,7 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
         else{
             videoPlayer = ExoPlayer.getInstance(getContext(), playerView,
                     step.videoURL(), step.thumbnailURL());
+            videoPlayer.restoreState(videoPlayerState);
         }
         stepDescriptionView.setText(step.description());
     }

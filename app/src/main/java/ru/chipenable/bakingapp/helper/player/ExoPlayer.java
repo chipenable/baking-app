@@ -1,21 +1,27 @@
 package ru.chipenable.bakingapp.helper.player;
 
 import android.content.Context;
+import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.DebugTextViewHelper;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -25,14 +31,14 @@ import com.google.android.exoplayer2.util.Util;
 
 import ru.chipenable.bakingapp.R;
 
+import static android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING;
+
 /**
  * Created by Pavel.B on 05.06.2017.
  */
 
-public class ExoPlayer implements IVideoPlayer {
+public class ExoPlayer implements IVideoPlayer{
 
-    private final String TAG = getClass().getName();
-    private final String POSITION_KEY = "player_position";
     private SimpleExoPlayer player;
 
     public static IVideoPlayer getInstance(Context context, SimpleExoPlayerView playerView,
@@ -72,23 +78,23 @@ public class ExoPlayer implements IVideoPlayer {
 
         // Prepare the player with the source.
         player.prepare(mediaSource);
-    }
 
-
-    @Override
-    public void saveState(Bundle bundle) {
-        if (player != null) {
-            long position = player.getCurrentPosition();
-            bundle.putLong(POSITION_KEY, position);
-        }
     }
 
     @Override
-    public void restoreState(Bundle bundle) {
-        if (player != null && bundle != null){
-            long position = bundle.getLong(POSITION_KEY);
-            player.seekTo(position);
+    public VideoPlayerState getState() {
+        long position = player.getCurrentPosition();
+        boolean isPlaying = player.getPlayWhenReady();
+        return VideoPlayerState.create(position, isPlaying);
+    }
+
+    @Override
+    public void restoreState(VideoPlayerState state) {
+        if (state != null) {
+            player.seekTo(state.position());
+            player.setPlayWhenReady(state.isPlaying());
         }
+
     }
 
     @Override
@@ -97,4 +103,5 @@ public class ExoPlayer implements IVideoPlayer {
             player.release();
         }
     }
+
 }

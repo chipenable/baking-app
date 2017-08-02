@@ -2,9 +2,6 @@ package ru.chipenable.bakingapp;
 
 import android.app.Application;
 
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
-
 import ru.chipenable.bakingapp.di.AppComponent;
 import ru.chipenable.bakingapp.di.AppModule;
 import ru.chipenable.bakingapp.di.DaggerAppComponent;
