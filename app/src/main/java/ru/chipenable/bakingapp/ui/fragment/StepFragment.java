@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 import ru.chipenable.bakingapp.BakingApp;
 import ru.chipenable.bakingapp.R;
 import ru.chipenable.bakingapp.di.AppComponent;
+import ru.chipenable.bakingapp.helper.glide.GlideApp;
 import ru.chipenable.bakingapp.helper.player.ExoPlayer;
 import ru.chipenable.bakingapp.helper.player.IVideoPlayer;
 import ru.chipenable.bakingapp.helper.player.VideoPlayerState;
@@ -38,6 +40,7 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     @BindView(R.id.video_frame) FrameLayout videoFrameView;
     @BindView(R.id.player_view) SimpleExoPlayerView playerView;
     @BindView(R.id.step_description)  TextView stepDescriptionView;
+    @BindView(R.id.thumbnail_url) ImageView thumbnailView;
 
     private IVideoPlayer videoPlayer;
     private VideoPlayerState videoPlayerState;
@@ -90,6 +93,7 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     @Override
     public void onResume() {
         super.onResume();
+        //load and show data
         presenter.start();
     }
 
@@ -97,13 +101,8 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
     public void onPause() {
         super.onPause();
         videoPlayerState = videoPlayer == null? null : videoPlayer.getState();
+        //release resources
         presenter.stop();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releaseResources();
     }
 
     @Override
@@ -122,10 +121,22 @@ public class StepFragment extends MvpAppCompatFragment implements IStepView {
             emptyView.setVisibility(View.VISIBLE);
         }
         else{
-            videoPlayer = ExoPlayer.getInstance(getContext(), playerView,
-                    step.videoURL(), step.thumbnailURL());
+            videoPlayer = ExoPlayer.getInstance(getContext(), playerView, step.videoURL());
             videoPlayer.restoreState(videoPlayerState);
         }
+
+        String thumbnailUrl = step.thumbnailURL();
+        if (thumbnailUrl == null || thumbnailUrl.isEmpty()){
+            thumbnailView.setVisibility(View.GONE);
+        }
+        else{
+            thumbnailView.setVisibility(View.VISIBLE);
+            GlideApp.with(getContext())
+                    .load(thumbnailUrl)
+                    .error(R.drawable.ic_cake)
+                    .into(thumbnailView);
+        }
+
         stepDescriptionView.setText(step.description());
     }
 

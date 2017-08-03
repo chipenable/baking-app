@@ -42,12 +42,11 @@ public class ExoPlayer implements IVideoPlayer{
     private SimpleExoPlayer player;
 
     public static IVideoPlayer getInstance(Context context, SimpleExoPlayerView playerView,
-                                           String videoUrl, String thumbnailUrl){
-        return new ExoPlayer(context, playerView, videoUrl, thumbnailUrl);
+                                           String videoUrl){
+        return new ExoPlayer(context, playerView, videoUrl);
     }
 
-    private ExoPlayer(Context context, SimpleExoPlayerView playerView, String videoUrl,
-                     String thumbnailUrl){
+    private ExoPlayer(Context context, SimpleExoPlayerView playerView, String videoUrl){
 
         //create a default TrackSelector
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
